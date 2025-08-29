@@ -1,22 +1,32 @@
 {
-  "name": "fastify-ecommerce-api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "dev": "tsx watch src/main.ts"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.13.1",
-  "dependencies": {
-    "fastify": "^5.5.0"
-  },
-  "devDependencies": {
-    "@types/node": "^24.3.0",
-    "tsx": "^4.20.5",
-    "typescript": "^5.9.2"
-  }
+    "name": "fastify-ecommerce-api",
+    "version": "1.0.0",
+    "description": "Fastify ecommerce API demo project",
+    "type": "module",
+    "scripts": {
+        "dev": "tsx watch src/main.ts",
+        "build": "tsc",
+        "lint": "eslint .",
+        "lint:fix": "eslint --fix",
+        "format": "prettier --write .",
+        "type:check": "tsc --noEmit"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "packageManager": "pnpm@10.13.1",
+    "dependencies": {
+        "fastify": "^5.5.0"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.34.0",
+        "@types/node": "^24.3.0",
+        "eslint": "^9.34.0",
+        "globals": "^16.3.0",
+        "jiti": "^2.5.1",
+        "prettier": "^3.6.2",
+        "tsx": "^4.20.5",
+        "typescript": "^5.9.2",
+        "typescript-eslint": "^8.41.0"
+    }
 }
