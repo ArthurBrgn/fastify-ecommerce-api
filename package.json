@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx watch src/main.ts"
   },
   "keywords": [],
   "author": "",
@@ -13,5 +13,10 @@
   "packageManager": "pnpm@10.13.1",
   "dependencies": {
     "fastify": "^5.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
   }
 }
