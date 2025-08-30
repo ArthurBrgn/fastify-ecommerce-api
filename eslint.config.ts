@@ -13,7 +13,7 @@ export default defineConfig([
             parserOptions: {
                 tsconfigRootDir: import.meta.dirname,
             },
-        },
+        }
     },
     tseslint.configs.strict,
     tseslint.configs.stylistic,

@@ -1,5 +1,6 @@
 import type { PrismaClient } from '@prisma/client'
 import { faker } from '@faker-js/faker'
+import { hashSync } from 'bcryptjs'
 
 export default async function userSeeder(prisma: PrismaClient, count: number) {
     for (let i = 0; i < count; i++) {
@@ -7,6 +8,7 @@ export default async function userSeeder(prisma: PrismaClient, count: number) {
             data: {
                 name: faker.person.fullName(),
                 email: faker.internet.email(),
+                password: hashSync('password', 10),
                 address: faker.location.streetAddress(),
                 city: faker.location.city(),
                 country: faker.location.country(),
