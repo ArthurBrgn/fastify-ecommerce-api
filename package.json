@@ -10,7 +10,10 @@
         "lint:fix": "eslint --fix",
         "format": "prettier --write .",
         "type:check": "tsc --noEmit",
-        "seed": "tsx database/seeders/index.ts"
+        "db:seed": "tsx database/seeders/databaseSeeder.ts",
+        "db:generate": "prisma generate",
+        "db:migrate": "prisma migrate dev",
+        "db:reset": "prisma migrate reset --force"
     },
     "keywords": [],
     "author": "",
@@ -18,11 +21,12 @@
     "packageManager": "pnpm@10.13.1",
     "dependencies": {
         "@prisma/client": "^6.15.0",
-        "fastify": "^5.5.0"
+        "fastify": "^5.5.0",
+        "fastify-plugin": "^5.0.1"
     },
     "devDependencies": {
-        "@faker-js/faker": "^10.0.0",
         "@eslint/js": "^9.34.0",
+        "@faker-js/faker": "^10.0.0",
         "@types/node": "^24.3.0",
         "eslint": "^9.34.0",
         "globals": "^16.3.0",

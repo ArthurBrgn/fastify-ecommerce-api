@@ -7,6 +7,10 @@ export default async function userSeeder(prisma: PrismaClient, count: number) {
             data: {
                 name: faker.person.fullName(),
                 email: faker.internet.email(),
+                address: faker.location.streetAddress(),
+                city: faker.location.city(),
+                country: faker.location.country(),
+                zipcode: faker.location.zipCode(),
             },
         })
     }

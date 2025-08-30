@@ -8,11 +8,15 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String
-  orders    Order[]
-  createdAt DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  name       String
+  address    String
+  city       String
+  zipcode    String
+  country    String
+  orders     Order[]
+  createdAt  DateTime @default(now())
 }
 
 model Product {

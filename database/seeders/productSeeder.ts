@@ -8,12 +8,12 @@ export default async function productSeeder(
     const categories: Category[] = []
 
     for (let i = 0; i < count.categories; i++) {
-        const name = faker.commerce.department()
+        const name = `Category ${i + 1}`
 
         const category = await prisma.category.create({
             data: {
                 name,
-                slug: faker.helpers.slugify(),
+                slug: faker.helpers.slugify(name),
             },
         })
         categories.push(category)
