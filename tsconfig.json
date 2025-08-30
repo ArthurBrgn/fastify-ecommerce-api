@@ -17,7 +17,7 @@
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
         "outDir": "dist",
-        "rootDir": "src",
+        "rootDir": ".",
         "baseUrl": "./src",
         "paths": {
             "@/*": ["*"]
@@ -26,6 +26,6 @@
         "types": ["node"],
         "useUnknownInCatchVariables": false
     },
-    "include": ["src/**/*.ts"],
+    "include": ["src/**/*.ts", "database/**/*.ts"],
     "exclude": ["node_modules", "dist"]
 }
