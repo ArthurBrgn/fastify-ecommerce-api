@@ -8,15 +8,16 @@ datasource db {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
-  email      String   @unique
-  name       String
-  address    String
-  city       String
-  zipcode    String
-  country    String
-  orders     Order[]
-  createdAt  DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String
+  address   String
+  city      String
+  zipcode   String
+  country   String
+  orders    Order[]
+  cart      Cart?
+  createdAt DateTime @default(now())
 }
 
 model Product {
@@ -29,6 +30,7 @@ model Product {
   categoryId  Int?
   category    Category?   @relation(fields: [categoryId], references: [id])
   orderItems  OrderItem[]
+  cartItems   CartItem[]
   createdAt   DateTime    @default(now())
 }
 
@@ -56,4 +58,24 @@ model OrderItem {
   product   Product @relation(fields: [productId], references: [id])
   quantity  Int
   price     Float
+}
+
+model Cart {
+  id        Int        @id @default(autoincrement())
+  user      User       @relation(fields: [userId], references: [id])
+  userId    Int        @unique
+  items     CartItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  id        Int     @id @default(autoincrement())
+  cart      Cart    @relation(fields: [cartId], references: [id])
+  cartId    Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  quantity  Int     @default(1)
+
+  @@unique([cartId, productId])
 }
