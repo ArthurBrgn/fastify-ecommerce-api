@@ -1,4 +1,4 @@
-import { BaseApiException } from '@/exceptions/BaseApiException'
+import { BaseApiException } from '../exceptions/BaseApiException'
 import fp from 'fastify-plugin'
 import { ZodError } from 'zod'
 
@@ -18,7 +18,7 @@ export default fp(async (server) => {
         if (error.validation) {
             return reply.status(422).send({
                 errors: error.validation.map((e) => ({
-                    field: e.instancePath.replace(/^\//, ''),
+                    field: e.instancePath.replace(/^\//, '').replace(/\//g, '.'), // format field path : "field.subfield"
                     message: e.message
                 }))
             })

@@ -13,7 +13,9 @@
         "db:seed": "tsx database/seeders/databaseSeeder.ts",
         "db:generate": "prisma generate",
         "db:migrate": "prisma migrate dev",
-        "db:reset": "prisma migrate reset --force"
+        "db:reset": "prisma migrate reset --force",
+        "test": "vitest --run",
+        "test:watch": "vitest"
     },
     "keywords": [],
     "author": "",
@@ -32,13 +34,16 @@
         "@eslint/js": "^9.34.0",
         "@faker-js/faker": "^10.0.0",
         "@types/node": "^24.3.0",
+        "@types/supertest": "^6.0.3",
         "eslint": "^9.34.0",
         "globals": "^16.3.0",
         "jiti": "^2.5.1",
         "prettier": "^3.6.2",
         "prisma": "^6.15.0",
+        "supertest": "^7.1.4",
         "tsx": "^4.20.5",
         "typescript": "^5.9.2",
-        "typescript-eslint": "^8.41.0"
+        "typescript-eslint": "^8.41.0",
+        "vitest": "^3.2.4"
     }
 }

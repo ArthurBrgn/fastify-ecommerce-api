@@ -26,7 +26,7 @@ const registerSchema = z
     })
     .refine((data) => data.password === data.password_confirm, {
         message: 'Passwords must match',
-        path: ['password_confirm', 'password']
+        path: ['password_confirm']
     })
 
 const loginResponseSchema = z.object({
@@ -59,6 +59,7 @@ export {
     LoginRequest,
     LoginResponse,
     registerSchema,
+    registerResponseSchema,
     RegisterRequest,
     RegisterResponse
 }

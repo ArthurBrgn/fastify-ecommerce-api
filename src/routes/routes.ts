@@ -1,5 +1,11 @@
-import { loginHandler, registerHandler } from '@/controllers/authController'
-import { loginResponseSchema, loginSchema, registerSchema } from '@/schemas/authSchema'
+import { loginHandler, registerHandler } from '../controllers/authController'
+
+import {
+    loginResponseSchema,
+    loginSchema,
+    registerResponseSchema,
+    registerSchema
+} from '../schemas/authSchema'
 import { FastifyInstance } from 'fastify'
 
 export default function routes(server: FastifyInstance) {
@@ -18,7 +24,8 @@ export default function routes(server: FastifyInstance) {
         '/register',
         {
             schema: {
-                body: registerSchema
+                body: registerSchema,
+                response: { 201: registerResponseSchema }
             }
         },
         registerHandler

@@ -1,7 +1,7 @@
-import { AuthenticationException } from '@/exceptions/auth/AuthenticationException'
-import { RegisterException } from '@/exceptions/auth/RegisterException'
-import { LoginRequest, RegisterRequest } from '@/schemas/authSchema'
 import { PrismaClient } from '@prisma/client'
+import { AuthenticationException } from '../exceptions/auth/AuthenticationException'
+import { RegisterException } from '../exceptions/auth/RegisterException'
+import { LoginRequest, RegisterRequest } from '../schemas/authSchema'
 import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
@@ -15,7 +15,7 @@ export async function loginUser(loginRequest: LoginRequest) {
             id: true,
             email: true,
             password: true
-        },
+        }
     })
 
     if (!user) {
