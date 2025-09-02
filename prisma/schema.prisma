@@ -12,7 +12,7 @@ model User {
   email     String   @unique
   password  String
   name      String
-  address   String
+  street   String
   city      String
   zipcode   String
   country   String

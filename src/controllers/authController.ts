@@ -1,13 +1,13 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { loginUser } from '../services/authService'
+import { loginUser, registerUser } from '../services/authService'
+import type { LoginRequest, RegisterRequest } from '../schemas/authSchema'
 
 export async function loginHandler(
-    request: FastifyRequest<{ Body: { email: string; password: string } }>,
+    request: FastifyRequest<{ Body: LoginRequest }>,
     reply: FastifyReply
 ) {
     try {
-        const { email, password } = request.body
-        const user = await loginUser(email, password)
+        const user = await loginUser(request.body)
 
         const token = await reply.jwtSign({
             id: user.id,
@@ -21,10 +21,19 @@ export async function loginHandler(
 }
 
 export async function registerHandler(
-    request: FastifyRequest<{
-        Body: { name: string; email: string; password: string; password_confirm: string }
-    }>,
+    request: FastifyRequest<{ Body: RegisterRequest }>,
     reply: FastifyReply
 ) {
-    console.log(request, reply)
+    try {
+        const user = await registerUser(request.body)
+
+        const token = await reply.jwtSign({
+            id: user.id,
+            email: user.email,
+        })
+
+        return reply.send({ token })
+    } catch {
+        return reply.status(401).send({ message: 'Invalid credentials' })
+    }
 }

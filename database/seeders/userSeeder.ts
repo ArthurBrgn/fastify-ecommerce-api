@@ -9,7 +9,7 @@ export default async function userSeeder(prisma: PrismaClient, count: number) {
                 name: faker.person.fullName(),
                 email: faker.internet.email(),
                 password: hashSync('password', 10),
-                address: faker.location.streetAddress(),
+                street: faker.location.streetAddress(),
                 city: faker.location.city(),
                 country: faker.location.country(),
                 zipcode: faker.location.zipCode(),
