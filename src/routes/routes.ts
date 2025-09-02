@@ -8,8 +8,8 @@ export default function routes(server: FastifyInstance) {
         {
             schema: {
                 body: loginSchema,
-                response: { 200: loginResponseSchema },
-            },
+                response: { 200: loginResponseSchema }
+            }
         },
         loginHandler
     )
@@ -18,8 +18,8 @@ export default function routes(server: FastifyInstance) {
         '/register',
         {
             schema: {
-                body: registerSchema,
-            },
+                body: registerSchema
+            }
         },
         registerHandler
     )

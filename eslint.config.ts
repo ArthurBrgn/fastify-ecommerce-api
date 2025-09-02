@@ -11,10 +11,10 @@ export default defineConfig([
         languageOptions: {
             globals: globals.node,
             parserOptions: {
-                tsconfigRootDir: import.meta.dirname,
-            },
-        },
+                tsconfigRootDir: import.meta.dirname
+            }
+        }
     },
     tseslint.configs.strict,
-    tseslint.configs.stylistic,
+    tseslint.configs.stylistic
 ])

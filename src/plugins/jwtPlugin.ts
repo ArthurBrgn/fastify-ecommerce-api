@@ -6,8 +6,8 @@ export default fp(async (fastify) => {
     fastify.register(fastifyJwt, {
         secret: process.env.JWT_SECRET || 'supersecret',
         sign: {
-            expiresIn: '7d',
-        },
+            expiresIn: '7d'
+        }
     })
 
     fastify.decorate('authenticate', async (request: FastifyRequest, reply: FastifyReply) => {

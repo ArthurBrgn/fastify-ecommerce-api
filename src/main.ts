@@ -6,7 +6,7 @@ import jwtPlugin from './plugins/jwtPlugin'
 import errorHandlerPlugin from './plugins/errorHandlerPlugin'
 
 const server = Fastify({
-    logger: true,
+    logger: true
 }).withTypeProvider<ZodTypeProvider>()
 
 // Link Zod as validator / serializer

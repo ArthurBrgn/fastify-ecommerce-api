@@ -13,8 +13,8 @@ export default async function productSeeder(
         const category = await prisma.category.create({
             data: {
                 name,
-                slug: faker.helpers.slugify(name),
-            },
+                slug: faker.helpers.slugify(name)
+            }
         })
         categories.push(category)
     }
@@ -30,8 +30,8 @@ export default async function productSeeder(
                 slug: faker.helpers.slugify(name),
                 price: parseFloat(faker.commerce.price({ min: 5, max: 200 })),
                 stock: faker.number.int({ min: 0, max: 100 }),
-                categoryId: category.id,
-            },
+                categoryId: category.id
+            }
         })
     }
 }

@@ -3,6 +3,19 @@ import { faker } from '@faker-js/faker'
 import { hashSync } from 'bcryptjs'
 
 export default async function userSeeder(prisma: PrismaClient, count: number) {
+    // Admin user
+    await prisma.user.create({
+        data: {
+            name: 'Admin',
+            email: 'admin@example.com',
+            password: hashSync('password', 10),
+            street: faker.location.streetAddress(),
+            city: faker.location.city(),
+            country: faker.location.country(),
+            zipcode: faker.location.zipCode()
+        }
+    })
+
     for (let i = 0; i < count; i++) {
         await prisma.user.create({
             data: {
@@ -12,8 +25,8 @@ export default async function userSeeder(prisma: PrismaClient, count: number) {
                 street: faker.location.streetAddress(),
                 city: faker.location.city(),
                 country: faker.location.country(),
-                zipcode: faker.location.zipCode(),
-            },
+                zipcode: faker.location.zipCode()
+            }
         })
     }
 }

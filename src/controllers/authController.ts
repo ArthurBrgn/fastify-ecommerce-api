@@ -11,7 +11,7 @@ export async function loginHandler(
 
         const token = await reply.jwtSign({
             id: user.id,
-            email: user.email,
+            email: user.email
         })
 
         return reply.send({ token })
@@ -29,7 +29,7 @@ export async function registerHandler(
 
         const token = await reply.jwtSign({
             id: user.id,
-            email: user.email,
+            email: user.email
         })
 
         return reply.send({ token })
