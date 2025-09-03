@@ -4,8 +4,9 @@ import routes from './routes/routes'
 import prismaPlugin from './plugins/prismaPlugin'
 import jwtPlugin from './plugins/jwtPlugin'
 import errorHandlerPlugin from './plugins/errorHandlerPlugin'
+import swaggerPlugin from './plugins/swaggerPlugin'
 
-export function buildApp() {
+export async function buildApp() {
     const server = Fastify({
         logger: true
     }).withTypeProvider<ZodTypeProvider>()
@@ -17,6 +18,9 @@ export function buildApp() {
     server.register(prismaPlugin)
     server.register(jwtPlugin)
     server.register(errorHandlerPlugin)
+
+    await server.register(swaggerPlugin)
+
     server.register(routes, { prefix: '/api' })
 
     return server

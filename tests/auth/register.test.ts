@@ -27,7 +27,7 @@ describe('POST /api/register', () => {
         supertest(server.server).post('/api/register').send(payload)
 
     beforeAll(async () => {
-        server = buildApp()
+        server = await buildApp()
         await server.ready()
     })
 

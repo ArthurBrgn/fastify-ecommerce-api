@@ -1,6 +1,6 @@
 import { buildApp } from './app'
 
-const server = buildApp()
+const server = await buildApp()
 
 server.listen({ port: 3000 }, (err) => {
     if (err) {
