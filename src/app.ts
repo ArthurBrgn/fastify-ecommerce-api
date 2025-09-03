@@ -1,6 +1,6 @@
 import Fastify from 'fastify'
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod'
-import routes from './routes/routes'
+import routes from './routes'
 import prismaPlugin from './plugins/prismaPlugin'
 import jwtPlugin from './plugins/jwtPlugin'
 import errorHandlerPlugin from './plugins/errorHandlerPlugin'
@@ -15,8 +15,8 @@ export async function buildApp() {
     server.setValidatorCompiler(validatorCompiler)
     server.setSerializerCompiler(serializerCompiler)
 
-    server.register(prismaPlugin)
     server.register(jwtPlugin)
+    server.register(prismaPlugin)
     server.register(errorHandlerPlugin)
 
     await server.register(swaggerPlugin)

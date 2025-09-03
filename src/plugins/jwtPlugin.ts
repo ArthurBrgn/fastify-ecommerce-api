@@ -2,6 +2,18 @@ import fp from 'fastify-plugin'
 import fastifyJwt from '@fastify/jwt'
 import { FastifyReply, FastifyRequest } from 'fastify'
 
+declare module 'fastify' {
+    interface FastifyInstance {
+        authenticate(request: FastifyRequest, reply: FastifyReply): Promise<void>
+    }
+}
+
+declare module '@fastify/jwt' {
+    interface FastifyJWT {
+        payload: { id: number }
+    }
+}
+
 export default fp(async (fastify) => {
     fastify.register(fastifyJwt, {
         secret: process.env.JWT_SECRET || 'supersecret',
@@ -12,7 +24,7 @@ export default fp(async (fastify) => {
 
     fastify.decorate('authenticate', async (request: FastifyRequest, reply: FastifyReply) => {
         try {
-            await request.jwtVerify()
+            await request.jwtVerify<{ id: string; email: string }>()
         } catch (err) {
             reply.send(err)
         }

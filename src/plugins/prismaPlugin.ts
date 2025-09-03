@@ -1,10 +1,12 @@
 import fp from 'fastify-plugin'
 import { PrismaClient } from '@prisma/client'
 
+export type AppPrismaClient = PrismaClient<{ omit: { user: { password: true } } }>
+
 // Use TypeScript module augmentation to declare the type of server.prisma to be PrismaClient
 declare module 'fastify' {
     interface FastifyInstance {
-        prisma: PrismaClient<{ omit: { user: { password: true } } }>
+        prisma: AppPrismaClient
     }
 }
 

@@ -1,12 +1,10 @@
-import { PrismaClient } from '@prisma/client'
+import { AppPrismaClient } from 'plugins/prismaPlugin'
 import { AuthenticationException } from '../exceptions/auth/AuthenticationException'
 import { RegisterException } from '../exceptions/auth/RegisterException'
 import { LoginRequest, RegisterRequest } from '../schemas/authSchema'
 import bcrypt from 'bcryptjs'
 
-const prisma = new PrismaClient()
-
-export async function loginUser(loginRequest: LoginRequest) {
+export async function loginUser(prisma: AppPrismaClient, loginRequest: LoginRequest) {
     const { email, password } = loginRequest
 
     const user = await prisma.user.findUnique({
@@ -31,7 +29,7 @@ export async function loginUser(loginRequest: LoginRequest) {
     return user
 }
 
-export async function registerUser(registerRequest: RegisterRequest) {
+export async function registerUser(prisma: AppPrismaClient, registerRequest: RegisterRequest) {
     const userExists = await prisma.user.findUnique({ where: { email: registerRequest.email } })
 
     if (userExists) {
@@ -49,4 +47,12 @@ export async function registerUser(registerRequest: RegisterRequest) {
             ...address
         }
     })
+}
+
+export async function getUserInfoById(prisma: AppPrismaClient, userId: number) {
+    const user = await prisma.user.findUnique({ where: { id: userId } })
+
+    console.log(user)
+
+    return user
 }
