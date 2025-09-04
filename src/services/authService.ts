@@ -3,6 +3,7 @@ import { AuthenticationException } from '../exceptions/auth/AuthenticationExcept
 import { RegisterException } from '../exceptions/auth/RegisterException'
 import { LoginRequest, RegisterRequest } from '../schemas/authSchema'
 import bcrypt from 'bcryptjs'
+import { ProfileException } from '../exceptions/auth/ProfileException'
 
 export async function loginUser(prisma: AppPrismaClient, loginRequest: LoginRequest) {
     const { email, password } = loginRequest
@@ -50,9 +51,9 @@ export async function registerUser(prisma: AppPrismaClient, registerRequest: Reg
 }
 
 export async function getUserInfoById(prisma: AppPrismaClient, userId: number) {
-    const user = await prisma.user.findUnique({ where: { id: userId } })
-
-    console.log(user)
+    const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } }).catch(() => {
+        throw new ProfileException('User not found', 404)
+    })
 
     return user
 }

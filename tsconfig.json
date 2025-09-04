@@ -23,6 +23,6 @@
         "types": ["node"],
         "useUnknownInCatchVariables": false
     },
-    "include": ["src/**/*.ts", "database/**/*.ts"],
-    "exclude": ["node_modules", "dist"]
+    "include": ["src/**/*.ts", "database/**/*.ts", "tests/**/*.ts"],
+    "exclude": ["node_modules", "dist", "tests", "database"]
 }

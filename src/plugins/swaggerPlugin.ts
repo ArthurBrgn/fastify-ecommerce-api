@@ -11,6 +11,16 @@ export default fp(async (server) => {
                 description: 'Fastify e-commerce API docs',
                 version: '1.0.0'
             },
+            components: {
+                securitySchemes: {
+                    bearerAuth: {
+                        type: 'http',
+                        scheme: 'bearer',
+                        bearerFormat: 'JWT'
+                    }
+                }
+            },
+            security: [{ bearerAuth: [] }],
             servers: [
                 {
                     url: 'http://localhost:3000'

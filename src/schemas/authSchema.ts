@@ -1,5 +1,16 @@
 import { z } from 'zod'
 
+const userSchema = z.object({
+    id: z.number(),
+    name: z.string(),
+    email: z.email(),
+    street: z.string(),
+    city: z.string(),
+    zipcode: z.string(),
+    country: z.string(),
+    createdAt: z.date()
+})
+
 const loginSchema = z.object({
     email: z.email().meta({ example: 'user@example.com' }),
     password: z.string().meta({ example: 'Password123' })
@@ -39,23 +50,18 @@ const loginResponseSchema = z.object({
 
 const registerResponseSchema = z.object({
     token: z.string(),
-    user: z.object({
-        id: z.number(),
-        name: z.string(),
-        email: z.email(),
-        street: z.string(),
-        city: z.string(),
-        zipcode: z.string(),
-        country: z.string(),
-        createdAt: z.date()
-    })
+    user: userSchema
 })
+
+const userProfileResponseSchema = userSchema
 
 type LoginRequest = z.infer<typeof loginSchema>
 type LoginResponse = z.infer<typeof loginResponseSchema>
 
 type RegisterRequest = z.infer<typeof registerSchema>
 type RegisterResponse = z.infer<typeof registerResponseSchema>
+
+type UserProfileResponse = z.infer<typeof userProfileResponseSchema>
 
 export {
     loginSchema,
@@ -65,5 +71,7 @@ export {
     registerSchema,
     registerResponseSchema,
     RegisterRequest,
-    RegisterResponse
+    RegisterResponse,
+    userProfileResponseSchema,
+    UserProfileResponse
 }

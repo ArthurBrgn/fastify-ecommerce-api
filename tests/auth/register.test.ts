@@ -4,53 +4,57 @@ import { buildApp } from '../../src/app'
 import { hash } from 'bcryptjs'
 import { resetDatabase } from '../utils/resetDatabase'
 import type { RegisterRequest, RegisterResponse } from '../../src/schemas/authSchema'
+import { FastifyInstance } from 'fastify'
+
+let server: FastifyInstance
+
+const testPassword = 'Password123'
+
+const userData: RegisterRequest = {
+    name: 'Test User',
+    email: 'test@example.com',
+    password: testPassword,
+    password_confirm: testPassword,
+    address: {
+        street: '123 Test St',
+        city: 'TestCity',
+        country: 'TestCountry',
+        zipcode: '12345'
+    }
+}
+
+const postRegister = (payload: RegisterRequest) =>
+    supertest(server.server).post('/api/register').send(payload)
+
+beforeAll(async () => {
+    server = await buildApp()
+    await server.ready()
+})
+
+beforeEach(async () => {
+    await resetDatabase(server.prisma)
+})
+
+afterAll(async () => {
+    await server.close()
+})
 
 describe('POST /api/register', () => {
-    let server
-
-    const password = 'Password123'
-
-    const userData: RegisterRequest = {
-        name: 'Test User',
-        email: 'test@example.com',
-        password: password,
-        password_confirm: password,
-        address: {
-            street: '123 Test St',
-            city: 'TestCity',
-            country: 'TestCountry',
-            zipcode: '12345'
-        }
-    }
-
-    const postRegister = (payload: RegisterRequest) =>
-        supertest(server.server).post('/api/register').send(payload)
-
-    beforeAll(async () => {
-        server = await buildApp()
-        await server.ready()
-    })
-
-    beforeEach(async () => {
-        await resetDatabase(server.prisma)
-    })
-
-    afterAll(async () => {
-        await server.close()
-    })
-
     it('should return 201 and user data for successful registration', async () => {
         const response = await postRegister(userData)
 
         const body: RegisterResponse = response.body
+        const { user } = body
 
         expect(response.status).toBe(201)
+
         expect(body).toHaveProperty('token')
+        expect(body).toHaveProperty('user')
+
         expect(typeof body.token).toBe('string')
 
-        expect(body).toHaveProperty('user')
-        const { user } = body
         expect(user).toMatchObject({
+            id: expect.any(Number),
             name: userData.name,
             email: userData.email,
             street: userData.address.street,
@@ -58,6 +62,7 @@ describe('POST /api/register', () => {
             country: userData.address.country,
             zipcode: userData.address.zipcode
         })
+
         expect(user).not.toHaveProperty('password')
     })
 
@@ -66,7 +71,7 @@ describe('POST /api/register', () => {
             data: {
                 name: 'Existing User',
                 email: userData.email,
-                password: await hash(password, 10),
+                password: await hash(testPassword, 10),
                 ...userData.address
             }
         })
@@ -74,6 +79,7 @@ describe('POST /api/register', () => {
         const response = await postRegister(userData)
 
         expect(response.status).toBe(409)
+
         expect(response.body).toHaveProperty('message', 'Email already in use')
     })
 
@@ -88,6 +94,7 @@ describe('POST /api/register', () => {
         const response = await postRegister(invalidData)
 
         expect(response.status).toBe(422)
+
         expect(response.body.errors).toBeInstanceOf(Array)
         expect(response.body.errors).toEqual(
             expect.arrayContaining([
@@ -111,6 +118,7 @@ describe('POST /api/register', () => {
         const response = await postRegister(mismatchData)
 
         expect(response.status).toBe(422)
+
         expect(response.body.errors).toBeInstanceOf(Array)
         expect(response.body.errors).toEqual(
             expect.arrayContaining([
