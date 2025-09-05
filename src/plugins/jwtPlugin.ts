@@ -25,7 +25,7 @@ export default fp(async (fastify) => {
     fastify.decorate('authenticate', async (request: FastifyRequest, reply: FastifyReply) => {
         try {
             await request.jwtVerify<{ id: string }>()
-        } catch (err) {
+        } catch {
             return reply.code(401).send({ message: 'Unauthorized action' })
         }
     })

@@ -1,5 +1,5 @@
 import { it, beforeAll, beforeEach, afterAll, expect, describe } from 'vitest'
-import supertest, { type Response } from 'supertest'
+import supertest from 'supertest'
 import { buildApp } from '../../src/app'
 import { hash } from 'bcryptjs'
 import { resetDatabase } from '../utils/resetDatabase'

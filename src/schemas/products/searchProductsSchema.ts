@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import paginatorSchema from 'schemas/common/paginatorSchema'
+import paginatorSchema from './../common/paginatorSchema'
 
 const searchProductsSchema = paginatorSchema
     .extend({
@@ -20,6 +20,33 @@ const searchProductsSchema = paginatorSchema
         }
     )
 
-type SearchProductsRequest = z.infer<typeof searchProductsSchema>
+const searchProductsResponseSchema = z.object({
+    meta: z.object({
+        page: z.number().int(),
+        itemsPerPage: z.number().int(),
+        total: z.number().int(),
+        totalPages: z.number().int()
+    }),
+    data: z.array(
+        z.object({
+            id: z.number().int(),
+            name: z.string(),
+            slug: z.string(),
+            description: z.nullable(z.string()),
+            price: z.number(),
+            stock: z.number().int(),
+            categoryId: z.number().int(),
+            createdAt: z.date()
+        })
+    )
+})
 
-export { searchProductsSchema, SearchProductsRequest }
+type SearchProductsRequest = z.infer<typeof searchProductsSchema>
+type SearchProductsResponse = z.infer<typeof searchProductsResponseSchema>
+
+export {
+    searchProductsSchema,
+    SearchProductsRequest,
+    searchProductsResponseSchema,
+    SearchProductsResponse
+}

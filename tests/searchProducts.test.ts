@@ -1,0 +1,177 @@
+import { it, beforeAll, beforeEach, afterAll, expect, describe } from 'vitest'
+import supertest from 'supertest'
+import { buildApp } from '../src/app'
+import { resetDatabase } from './utils/resetDatabase'
+import {
+    searchProductsSchema,
+    type SearchProductsRequest,
+    type SearchProductsResponse
+} from './../src/schemas/products/searchProductsSchema'
+import { FastifyInstance } from 'fastify'
+import { hash } from 'bcryptjs'
+
+let server: FastifyInstance
+let token: string
+
+const searchProducts = (queryParams?: Partial<SearchProductsRequest>) => {
+    const validatedParams = searchProductsSchema.parse(queryParams || {})
+
+    return supertest(server.server)
+        .get('/api/products')
+        .set('Authorization', `Bearer ${token}`)
+        .query(validatedParams)
+        .send()
+}
+
+beforeAll(async () => {
+    server = await buildApp()
+    await server.ready()
+
+    await resetDatabase(server.prisma)
+
+    const createdUser = await server.prisma.user.create({
+        data: {
+            name: 'Test User',
+            email: 'test@example.com',
+            password: await hash('password', 10),
+            street: '123 Test St',
+            city: 'TestCity',
+            country: 'TestCountry',
+            zipcode: '12345'
+        }
+    })
+
+    const category = await server.prisma.category.create({
+        data: {
+            name: 'Category',
+            slug: 'category'
+        }
+    })
+
+    for (let i = 0; i < 20; i++) {
+        await server.prisma.product.create({
+            data: {
+                name: `Product ${i}`,
+                slug: `product-${i}`,
+                description: null,
+                price: Math.floor(Math.random() * 101),
+                stock: Math.floor(Math.random() * 101),
+                categoryId: category.id
+            }
+        })
+    }
+
+    token = await server.jwt.sign({ id: createdUser.id })
+})
+
+afterAll(async () => {
+    await resetDatabase(server.prisma)
+    await server.close()
+})
+
+describe('POST /api/products', () => {
+    it('should return paginated products successfully with default params', async () => {
+        const response = await searchProducts()
+
+        const body: SearchProductsResponse = response.body
+
+        expect(response.status).toBe(200)
+
+        expect(body.meta).toMatchObject({
+            page: 1,
+            itemsPerPage: 10,
+            total: 20,
+            totalPages: 2
+        })
+
+        expect(Array.isArray(body.data)).toBe(true)
+        expect(body.data.length).toBeLessThanOrEqual(body.meta.itemsPerPage)
+
+        body.data.forEach((product) => {
+            expect(product).toHaveProperty('id')
+            expect(typeof product.id).toBe('number')
+
+            expect(product).toHaveProperty('name')
+            expect(typeof product.name).toBe('string')
+
+            expect(product).toHaveProperty('slug')
+            expect(typeof product.slug).toBe('string')
+
+            expect(product).toHaveProperty('description')
+            expect(product.description === null || typeof product.description === 'string').toBe(
+                true
+            )
+
+            expect(product).toHaveProperty('price')
+            expect(typeof product.price).toBe('number')
+
+            expect(product).toHaveProperty('stock')
+            expect(typeof product.stock).toBe('number')
+
+            expect(product).toHaveProperty('categoryId')
+            expect(typeof product.categoryId).toBe('number')
+
+            expect(product).toHaveProperty('createdAt')
+            expect(new Date(product.createdAt).toString() !== 'Invalid Date').toBe(true)
+        })
+    })
+
+    it('should return correct products for page 2', async () => {
+        const response = await searchProducts({ page: 2 })
+        const body: SearchProductsResponse = response.body
+
+        expect(response.status).toBe(200)
+        expect(body.meta.page).toBe(2)
+        expect(body.data.length).toBe(10)
+    })
+
+    it('should filter products by search term', async () => {
+        const response = await searchProducts({ search: 'Product 1' })
+        const body: SearchProductsResponse = response.body
+
+        expect(response.status).toBe(200)
+        expect(
+            body.data.every(
+                (p) =>
+                    p.name.includes('Product 1') ||
+                    (p.description && p.description.includes('Product 1'))
+            )
+        ).toBe(true)
+    })
+
+    it('should filter products by inStock', async () => {
+        const response = await searchProducts({ inStock: true })
+        const body: SearchProductsResponse = response.body
+
+        expect(response.status).toBe(200)
+        expect(body.data.every((p) => p.stock > 0)).toBe(true)
+    })
+
+    it('should filter by minPrice', async () => {
+        const minPrice = 50
+        const response = await searchProducts({ minPrice })
+        const body: SearchProductsResponse = response.body
+
+        expect(response.status).toBe(200)
+        expect(body.data.every((p) => p.price >= minPrice)).toBe(true)
+    })
+
+    it('should filter by maxPrice', async () => {
+        const maxPrice = 50
+        const response = await searchProducts({ maxPrice })
+        const body: SearchProductsResponse = response.body
+
+        expect(response.status).toBe(200)
+        expect(body.data.every((p) => p.price <= maxPrice)).toBe(true)
+    })
+
+    it('should filter by minPrice and maxPrice together', async () => {
+        const minPrice = 20
+        const maxPrice = 40
+        const response = await searchProducts({ minPrice, maxPrice })
+        const body: SearchProductsResponse = response.body
+
+        expect(response.status).toBe(200)
+        expect(body.data.every((p) => p.price >= minPrice && p.price <= maxPrice)).toBe(true)
+    })
+})

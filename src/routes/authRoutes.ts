@@ -14,6 +14,7 @@ export default function authRoutes(server: FastifyInstance) {
         { schema: { security: [], body: loginSchema, response: { 200: loginResponseSchema } } },
         loginHandler
     )
+
     server.post(
         '/register',
         {
