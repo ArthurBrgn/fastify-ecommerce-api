@@ -1,10 +1,10 @@
-import { it, beforeAll, beforeEach, afterAll, expect, describe } from 'vitest'
-import supertest from 'supertest'
-import { buildApp } from '../../src/app'
 import { hash } from 'bcryptjs'
-import { resetDatabase } from '../utils/resetDatabase'
-import type { RegisterRequest, RegisterResponse } from '../../src/schemas/authSchema'
 import { FastifyInstance } from 'fastify'
+import supertest from 'supertest'
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
+import { buildApp } from '../../src/app'
+import type { RegisterRequest, RegisterResponse } from '../../src/schemas/authSchema'
+import { resetDatabase } from '../utils/resetDatabase'
 
 let server: FastifyInstance
 
@@ -40,10 +40,11 @@ afterAll(async () => {
 })
 
 describe('POST /api/register', () => {
-    it('should return 201 and user data for successful registration', async () => {
+    it('should success and return user data and token', async () => {
         const response = await postRegister(userData)
 
         const body: RegisterResponse = response.body
+
         const { user } = body
 
         expect(response.status).toBe(201)

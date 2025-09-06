@@ -45,8 +45,8 @@ type SearchProductsRequest = z.infer<typeof searchProductsSchema>
 type SearchProductsResponse = z.infer<typeof searchProductsResponseSchema>
 
 export {
-    searchProductsSchema,
     SearchProductsRequest,
+    SearchProductsResponse,
     searchProductsResponseSchema,
-    SearchProductsResponse
+    searchProductsSchema
 }

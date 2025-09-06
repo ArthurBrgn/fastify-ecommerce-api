@@ -64,14 +64,14 @@ type RegisterResponse = z.infer<typeof registerResponseSchema>
 type UserProfileResponse = z.infer<typeof userProfileResponseSchema>
 
 export {
-    loginSchema,
-    loginResponseSchema,
     LoginRequest,
     LoginResponse,
-    registerSchema,
-    registerResponseSchema,
+    loginResponseSchema,
+    loginSchema,
     RegisterRequest,
     RegisterResponse,
-    userProfileResponseSchema,
-    UserProfileResponse
+    registerResponseSchema,
+    registerSchema,
+    UserProfileResponse,
+    userProfileResponseSchema
 }

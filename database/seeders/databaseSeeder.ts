@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
-import userSeeder from './userSeeder'
 import productSeeder from './productSeeder'
+import userSeeder from './userSeeder'
 
 const prisma = new PrismaClient()
 

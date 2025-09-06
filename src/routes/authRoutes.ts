@@ -1,10 +1,10 @@
 import { FastifyInstance } from 'fastify'
 import { loginHandler, profileHandler, registerHandler } from '../controllers/authController'
 import {
-    loginSchema,
     loginResponseSchema,
-    registerSchema,
+    loginSchema,
     registerResponseSchema,
+    registerSchema,
     userProfileResponseSchema
 } from '../schemas/authSchema'
 

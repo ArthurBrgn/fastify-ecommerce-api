@@ -1,3 +1,5 @@
+import organizeImports from 'prettier-plugin-organize-imports'
+
 /** @type {import("prettier").Config} */
 export default {
     semi: false,
@@ -5,5 +7,6 @@ export default {
     trailingComma: 'none',
     printWidth: 100,
     tabWidth: 4,
-    arrowParens: 'always'
+    arrowParens: 'always',
+    plugins: [organizeImports]
 }

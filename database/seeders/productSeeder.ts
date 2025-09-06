@@ -1,5 +1,5 @@
-import type { Category, PrismaClient } from '@prisma/client'
 import { faker } from '@faker-js/faker'
+import type { Category, PrismaClient } from '@prisma/client'
 
 export default async function productSeeder(
     prisma: PrismaClient,

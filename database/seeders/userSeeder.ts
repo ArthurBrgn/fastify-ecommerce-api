@@ -1,5 +1,5 @@
-import type { PrismaClient } from '@prisma/client'
 import { faker } from '@faker-js/faker'
+import type { PrismaClient } from '@prisma/client'
 import { hashSync } from 'bcryptjs'
 
 export default async function userSeeder(prisma: PrismaClient, count: number) {

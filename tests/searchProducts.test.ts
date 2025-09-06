@@ -1,26 +1,31 @@
-import { it, beforeAll, beforeEach, afterAll, expect, describe } from 'vitest'
+import { hash } from 'bcryptjs'
+import { FastifyInstance } from 'fastify'
 import supertest from 'supertest'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { buildApp } from '../src/app'
-import { resetDatabase } from './utils/resetDatabase'
 import {
     searchProductsSchema,
     type SearchProductsRequest,
     type SearchProductsResponse
 } from './../src/schemas/products/searchProductsSchema'
-import { FastifyInstance } from 'fastify'
-import { hash } from 'bcryptjs'
+import { resetDatabase } from './utils/resetDatabase'
 
 let server: FastifyInstance
 let token: string
 
-const searchProducts = (queryParams?: Partial<SearchProductsRequest>) => {
+const searchProducts = (
+    queryParams?: Partial<SearchProductsRequest>,
+    shouldAuthenticate = true
+) => {
     const validatedParams = searchProductsSchema.parse(queryParams || {})
 
-    return supertest(server.server)
-        .get('/api/products')
-        .set('Authorization', `Bearer ${token}`)
-        .query(validatedParams)
-        .send()
+    const request = supertest(server.server).get('/api/products').query(validatedParams)
+
+    if (shouldAuthenticate) {
+        request.set('Authorization', `Bearer ${token}`)
+    }
+
+    return request.send()
 }
 
 beforeAll(async () => {
@@ -32,7 +37,7 @@ beforeAll(async () => {
     const createdUser = await server.prisma.user.create({
         data: {
             name: 'Test User',
-            email: 'test@example.com',
+            email: 'products@example.com',
             password: await hash('password', 10),
             street: '123 Test St',
             city: 'TestCity',
@@ -173,5 +178,12 @@ describe('POST /api/products', () => {
 
         expect(response.status).toBe(200)
         expect(body.data.every((p) => p.price >= minPrice && p.price <= maxPrice)).toBe(true)
+    })
+
+    it('should return unauthorized', async () => {
+        const { status, body } = await searchProducts({}, false)
+
+        expect(status).toBe(401)
+        expect(body).toHaveProperty('message')
     })
 })

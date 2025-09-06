@@ -1,5 +1,5 @@
-import { searchProductsHandler } from './../controllers/productController'
 import { FastifyInstance } from 'fastify'
+import { searchProductsHandler } from './../controllers/productController'
 import {
     SearchProductsRequest,
     searchProductsResponseSchema,

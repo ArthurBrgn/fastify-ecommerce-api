@@ -1,5 +1,5 @@
-import fp from 'fastify-plugin'
 import { PrismaClient } from '@prisma/client'
+import fp from 'fastify-plugin'
 
 export type AppPrismaClient = PrismaClient<{ omit: { user: { password: true } } }>
 
