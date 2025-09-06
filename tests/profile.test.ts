@@ -1,9 +1,9 @@
+import { buildApp } from '@/app'
+import type { UserProfileResponse } from '@/schemas/authSchema'
 import { hash } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import supertest from 'supertest'
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
-import { buildApp } from '../src/app'
-import type { UserProfileResponse } from '../src/schemas/authSchema'
 import { resetDatabase } from './utils/resetDatabase'
 
 let server: FastifyInstance

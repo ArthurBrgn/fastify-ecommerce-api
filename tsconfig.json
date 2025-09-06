@@ -18,11 +18,14 @@
         "noFallthroughCasesInSwitch": true,
         "outDir": "dist",
         "rootDir": ".",
-        "baseUrl": "./src",
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"]
+        },
         "resolveJsonModule": true,
         "types": ["node"],
         "useUnknownInCatchVariables": false
     },
-    "include": ["src/**/*.ts", "database/**/*.ts", "tests/**/*.ts"],
-    "exclude": ["node_modules", "dist", "tests", "database"]
+    "include": ["src/**/*.ts"],
+    "exclude": ["node_modules", "dist"]
 }

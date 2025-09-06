@@ -1,12 +1,12 @@
-import { FastifyInstance } from 'fastify'
-import { loginHandler, profileHandler, registerHandler } from '../controllers/authController'
+import { loginHandler, profileHandler, registerHandler } from '@/controllers/authController'
 import {
     loginResponseSchema,
     loginSchema,
     registerResponseSchema,
     registerSchema,
     userProfileResponseSchema
-} from '../schemas/authSchema'
+} from '@/schemas/authSchema'
+import { FastifyInstance } from 'fastify'
 
 export default function authRoutes(server: FastifyInstance) {
     server.post(

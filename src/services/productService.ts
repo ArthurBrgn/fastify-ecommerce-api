@@ -1,6 +1,6 @@
+import { AppPrismaClient } from '@/plugins/prismaPlugin'
+import { SearchProductsRequest } from '@/schemas/products/searchProductsSchema'
 import { Prisma } from '@prisma/client'
-import { AppPrismaClient } from 'plugins/prismaPlugin'
-import { SearchProductsRequest } from 'schemas/products/searchProductsSchema'
 
 export async function searchProducts(
     prisma: AppPrismaClient,

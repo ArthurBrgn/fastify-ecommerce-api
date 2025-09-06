@@ -1,5 +1,5 @@
+import paginatorSchema from '@/schemas/common/paginatorSchema'
 import { z } from 'zod'
-import paginatorSchema from './../common/paginatorSchema'
 
 const searchProductsSchema = paginatorSchema
     .extend({

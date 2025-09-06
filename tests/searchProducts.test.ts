@@ -1,13 +1,13 @@
-import { hash } from 'bcryptjs'
-import { FastifyInstance } from 'fastify'
-import supertest from 'supertest'
-import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import { buildApp } from '../src/app'
+import { buildApp } from '@/app'
 import {
     searchProductsSchema,
     type SearchProductsRequest,
     type SearchProductsResponse
-} from './../src/schemas/products/searchProductsSchema'
+} from '@/schemas/products/searchProductsSchema'
+import { hash } from 'bcryptjs'
+import { FastifyInstance } from 'fastify'
+import supertest from 'supertest'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { resetDatabase } from './utils/resetDatabase'
 
 let server: FastifyInstance

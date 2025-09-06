@@ -1,10 +1,10 @@
-import { FastifyInstance } from 'fastify'
-import { searchProductsHandler } from './../controllers/productController'
+import { searchProductsHandler } from '@/controllers/productController'
 import {
     SearchProductsRequest,
     searchProductsResponseSchema,
     searchProductsSchema
-} from './../schemas/products/searchProductsSchema'
+} from '@/schemas/products/searchProductsSchema'
+import { FastifyInstance } from 'fastify'
 
 export default function productRoutes(server: FastifyInstance) {
     server.get<{ Querystring: SearchProductsRequest }>(
