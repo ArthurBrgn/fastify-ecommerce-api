@@ -1,7 +1,8 @@
-import paginatorSchema from '@/schemas/common/paginatorSchema'
+import { paginationMetaSchema, paginationRequestSchema } from '@/schemas/common/paginationSchema'
+import { baseProductSchema } from '@/schemas/common/productSchema'
 import { z } from 'zod'
 
-const searchProductsSchema = paginatorSchema
+export const searchProductsSchema = paginationRequestSchema
     .extend({
         search: z.string().trim().min(1).optional(),
         categoryIds: z.array(z.coerce.number().int()).default([]),
@@ -20,33 +21,10 @@ const searchProductsSchema = paginatorSchema
         }
     )
 
-const searchProductsResponseSchema = z.object({
-    meta: z.object({
-        page: z.number().int(),
-        itemsPerPage: z.number().int(),
-        total: z.number().int(),
-        totalPages: z.number().int()
-    }),
-    data: z.array(
-        z.object({
-            id: z.number().int(),
-            name: z.string(),
-            slug: z.string(),
-            description: z.nullable(z.string()),
-            price: z.number(),
-            stock: z.number().int(),
-            categoryId: z.number().int(),
-            createdAt: z.date()
-        })
-    )
+export const searchProductsResponseSchema = z.object({
+    meta: paginationMetaSchema,
+    data: z.array(baseProductSchema.extend({ categoryId: z.number().int() }))
 })
 
-type SearchProductsRequest = z.infer<typeof searchProductsSchema>
-type SearchProductsResponse = z.infer<typeof searchProductsResponseSchema>
-
-export {
-    SearchProductsRequest,
-    SearchProductsResponse,
-    searchProductsResponseSchema,
-    searchProductsSchema
-}
+export type SearchProductsRequest = z.infer<typeof searchProductsSchema>
+export type SearchProductsResponse = z.infer<typeof searchProductsResponseSchema>

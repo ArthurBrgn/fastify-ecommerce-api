@@ -1,9 +1,14 @@
-import { searchProductsHandler } from '@/controllers/productController'
+import { searchProductsHandler, viewProductHandler } from '@/controllers/productController'
 import {
     SearchProductsRequest,
     searchProductsResponseSchema,
     searchProductsSchema
 } from '@/schemas/products/searchProductsSchema'
+import {
+    ViewProductRequest,
+    viewProductResponseSchema,
+    viewProductSchema
+} from '@/schemas/products/viewProductSchema'
 import { FastifyInstance } from 'fastify'
 
 export default function productRoutes(server: FastifyInstance) {
@@ -17,5 +22,17 @@ export default function productRoutes(server: FastifyInstance) {
             }
         },
         searchProductsHandler
+    )
+
+    server.get<{ Params: ViewProductRequest }>(
+        '/products/:id',
+        {
+            onRequest: [server.authenticate],
+            schema: {
+                params: viewProductSchema,
+                response: { 200: viewProductResponseSchema }
+            }
+        },
+        viewProductHandler
     )
 }

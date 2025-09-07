@@ -6,6 +6,9 @@ export default defineConfig({
     test: {
         fileParallelism: false,
         globals: true,
-        environment: 'node'
+        environment: 'node',
+        alias: {
+            '@/': new URL('./src/', import.meta.url).pathname, 
+        }
     }
 })

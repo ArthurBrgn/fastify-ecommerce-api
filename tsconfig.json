@@ -6,10 +6,6 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "strict": true,
-        "noImplicitAny": true,
-        "strictNullChecks": true,
-        "strictFunctionTypes": true,
-        "strictPropertyInitialization": true,
         "forceConsistentCasingInFileNames": true,
         "skipLibCheck": true,
         "noUnusedLocals": true,
@@ -17,10 +13,10 @@
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
         "outDir": "dist",
-        "rootDir": ".",
-        "baseUrl": ".",
+        "rootDir": "src",
+        "baseUrl": "src",
         "paths": {
-            "@/*": ["src/*"]
+          "@/*": ["*"]
         },
         "resolveJsonModule": true,
         "types": ["node"],

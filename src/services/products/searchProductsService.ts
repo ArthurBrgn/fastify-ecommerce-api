@@ -2,7 +2,7 @@ import { AppPrismaClient } from '@/plugins/prismaPlugin'
 import { SearchProductsRequest } from '@/schemas/products/searchProductsSchema'
 import { Prisma } from '@prisma/client'
 
-export async function searchProducts(
+export default async function searchProducts(
     prisma: AppPrismaClient,
     searchProductsRequest: SearchProductsRequest
 ) {
