@@ -3,12 +3,12 @@ import {
     SearchProductsRequest,
     searchProductsResponseSchema,
     searchProductsSchema
-} from '@/schemas/products/searchProductsSchema'
+} from '@/schemas/product/searchProductsSchema'
 import {
     ViewProductRequest,
     viewProductResponseSchema,
     viewProductSchema
-} from '@/schemas/products/viewProductSchema'
+} from '@/schemas/product/viewProductSchema'
 import { FastifyInstance } from 'fastify'
 
 export default function productRoutes(server: FastifyInstance) {

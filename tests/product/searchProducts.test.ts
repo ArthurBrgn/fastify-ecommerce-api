@@ -3,27 +3,23 @@ import {
     searchProductsSchema,
     type SearchProductsRequest,
     type SearchProductsResponse
-} from '@/schemas/products/searchProductsSchema'
+} from '@/schemas/product/searchProductsSchema'
 import { hash } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import supertest from 'supertest'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import { resetDatabase } from './utils/resetDatabase'
+import { resetDatabase } from './../utils/resetDatabase'
 
 let server: FastifyInstance
 let token: string
 
-const searchProducts = (
-    queryParams?: Partial<SearchProductsRequest>,
-    shouldAuthenticate = true
-) => {
+const searchProducts = (queryParams?: Partial<SearchProductsRequest>, authToken?: string) => {
     const validatedParams = searchProductsSchema.parse(queryParams || {})
 
-    const request = supertest(server.server).get('/api/products').query(validatedParams)
-
-    if (shouldAuthenticate) {
-        request.set('Authorization', `Bearer ${token}`)
-    }
+    const request = supertest(server.server)
+        .get('/api/products')
+        .set('Authorization', authToken ? `Bearer ${authToken}` : '')
+        .query(validatedParams)
 
     return request.send()
 }
@@ -74,9 +70,9 @@ afterAll(async () => {
     await server.close()
 })
 
-describe('POST /api/products', () => {
+describe('GET /api/products', () => {
     it('should return paginated products successfully with default params', async () => {
-        const response = await searchProducts()
+        const response = await searchProducts({}, token)
 
         const body: SearchProductsResponse = response.body
 
@@ -117,12 +113,12 @@ describe('POST /api/products', () => {
             expect(typeof product.categoryId).toBe('number')
 
             expect(product).toHaveProperty('createdAt')
-            expect(new Date(product.createdAt).toString() !== 'Invalid Date').toBe(true)
+            expect(new Date(product.createdAt).toString()).not.toBe('Invalid Date')
         })
     })
 
     it('should return correct products for page 2', async () => {
-        const response = await searchProducts({ page: 2 })
+        const response = await searchProducts({ page: 2 }, token)
         const body: SearchProductsResponse = response.body
 
         expect(response.status).toBe(200)
@@ -131,7 +127,7 @@ describe('POST /api/products', () => {
     })
 
     it('should filter products by search term', async () => {
-        const response = await searchProducts({ search: 'Product 1' })
+        const response = await searchProducts({ search: 'Product 1' }, token)
         const body: SearchProductsResponse = response.body
 
         expect(response.status).toBe(200)
@@ -145,7 +141,7 @@ describe('POST /api/products', () => {
     })
 
     it('should filter products by inStock', async () => {
-        const response = await searchProducts({ inStock: true })
+        const response = await searchProducts({ inStock: true }, token)
         const body: SearchProductsResponse = response.body
 
         expect(response.status).toBe(200)
@@ -154,7 +150,7 @@ describe('POST /api/products', () => {
 
     it('should filter by minPrice', async () => {
         const minPrice = 50
-        const response = await searchProducts({ minPrice })
+        const response = await searchProducts({ minPrice }, token)
         const body: SearchProductsResponse = response.body
 
         expect(response.status).toBe(200)
@@ -163,7 +159,7 @@ describe('POST /api/products', () => {
 
     it('should filter by maxPrice', async () => {
         const maxPrice = 50
-        const response = await searchProducts({ maxPrice })
+        const response = await searchProducts({ maxPrice }, token)
         const body: SearchProductsResponse = response.body
 
         expect(response.status).toBe(200)
@@ -173,15 +169,22 @@ describe('POST /api/products', () => {
     it('should filter by minPrice and maxPrice together', async () => {
         const minPrice = 20
         const maxPrice = 40
-        const response = await searchProducts({ minPrice, maxPrice })
+        const response = await searchProducts({ minPrice, maxPrice }, token)
         const body: SearchProductsResponse = response.body
 
         expect(response.status).toBe(200)
         expect(body.data.every((p) => p.price >= minPrice && p.price <= maxPrice)).toBe(true)
     })
 
-    it('should return unauthorized', async () => {
-        const { status, body } = await searchProducts({}, false)
+    it('should return 401 if token is not present', async () => {
+        const { status, body } = await searchProducts()
+
+        expect(status).toBe(401)
+        expect(body).toHaveProperty('message')
+    })
+
+    it('should return 401 if token is invalid', async () => {
+        const { status, body } = await searchProducts({}, 'Invalid token')
 
         expect(status).toBe(401)
         expect(body).toHaveProperty('message')
