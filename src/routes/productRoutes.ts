@@ -13,7 +13,7 @@ import { FastifyInstance } from 'fastify'
 
 export default function productRoutes(server: FastifyInstance) {
     server.get<{ Querystring: SearchProductsRequest }>(
-        '/products',
+        '/',
         {
             onRequest: [server.authenticate],
             schema: {
@@ -25,7 +25,7 @@ export default function productRoutes(server: FastifyInstance) {
     )
 
     server.get<{ Params: ViewProductRequest }>(
-        '/products/:id',
+        '/:id',
         {
             onRequest: [server.authenticate],
             schema: {

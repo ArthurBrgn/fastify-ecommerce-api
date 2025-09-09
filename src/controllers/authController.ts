@@ -1,5 +1,5 @@
 import type { LoginRequest, RegisterRequest } from '@/schemas/authSchema'
-import { getUserInfoById, loginUser, registerUser } from '@/services/authService'
+import { loginUser, registerUser } from '@/services/authService'
 import { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function loginHandler(
@@ -26,10 +26,4 @@ export async function registerHandler(
     })
 
     return reply.status(201).send({ user, token })
-}
-
-export async function profileHandler(request: FastifyRequest, reply: FastifyReply) {
-    const user = await getUserInfoById(request.server.prisma, request.user.id)
-
-    return reply.status(200).send(user)
 }

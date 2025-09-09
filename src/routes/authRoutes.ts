@@ -1,10 +1,9 @@
-import { loginHandler, profileHandler, registerHandler } from '@/controllers/authController'
+import { loginHandler, registerHandler } from '@/controllers/authController'
 import {
     loginResponseSchema,
     loginSchema,
     registerResponseSchema,
-    registerSchema,
-    userProfileResponseSchema
+    registerSchema
 } from '@/schemas/authSchema'
 import { FastifyInstance } from 'fastify'
 
@@ -25,14 +24,5 @@ export default function authRoutes(server: FastifyInstance) {
             }
         },
         registerHandler
-    )
-
-    server.get(
-        '/me',
-        {
-            onRequest: [server.authenticate],
-            schema: { response: { 200: userProfileResponseSchema } }
-        },
-        profileHandler
     )
 }

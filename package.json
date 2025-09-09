@@ -9,7 +9,7 @@
         "lint": "eslint .",
         "lint:fix": "eslint --fix",
         "format": "prettier --write .",
-        "type:check": "tsc -p tsconfig.test.json --noEmit",
+        "type:check": "tsc -p tests/tsconfig.json --noEmit",
         "db:seed": "tsx database/seeders/databaseSeeder.ts",
         "db:generate": "prisma generate",
         "db:migrate": "prisma migrate dev",

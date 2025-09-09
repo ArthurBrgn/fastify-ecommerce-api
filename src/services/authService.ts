@@ -1,5 +1,4 @@
 import { AuthenticationException } from '@/exceptions/auth/AuthenticationException'
-import { ProfileException } from '@/exceptions/auth/ProfileException'
 import { RegisterException } from '@/exceptions/auth/RegisterException'
 import { AppPrismaClient } from '@/plugins/prismaPlugin'
 import { LoginRequest, RegisterRequest } from '@/schemas/authSchema'
@@ -48,12 +47,4 @@ export async function registerUser(prisma: AppPrismaClient, registerRequest: Reg
             ...address
         }
     })
-}
-
-export async function getUserInfoById(prisma: AppPrismaClient, userId: number) {
-    const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } }).catch(() => {
-        throw new ProfileException('User not found', 404)
-    })
-
-    return user
 }

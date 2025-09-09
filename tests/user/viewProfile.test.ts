@@ -1,10 +1,10 @@
 import { buildApp } from '@/app'
-import type { UserProfileResponse } from '@/schemas/authSchema'
+import type { UserProfileResponse } from '@/schemas/user/profileSchema'
 import { hash } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import supertest from 'supertest'
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
-import { resetDatabase } from './../utils/resetDatabase'
+import { resetDatabase } from '../utils/resetDatabase'
 
 let server: FastifyInstance
 let token: string
@@ -23,7 +23,7 @@ const userData = {
 
 const getUserProfile = (authToken?: string) =>
     supertest(server.server)
-        .get('/api/me')
+        .get('/api/users/me')
         .set('Authorization', authToken ? `Bearer ${authToken}` : '')
 
 beforeAll(async () => {
@@ -48,7 +48,7 @@ afterAll(async () => {
     await server.close()
 })
 
-describe('GET /api/me (User profile)', () => {
+describe('GET /api/users/me (User profile)', () => {
     it('should return user data successfully', async () => {
         const response = await getUserProfile(token)
         expect(response.status).toBe(200)
