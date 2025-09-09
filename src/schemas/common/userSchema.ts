@@ -26,4 +26,12 @@ const userAddressSchema = z.object({
         .meta({ example: '75001' })
 })
 
-export { userAddressSchema, userSchema }
+const saveUserSchema = z.object({
+    name: z.string().min(3).max(30).meta({ example: 'John Doe' }),
+    email: z.email().meta({ example: 'john@example.com' }),
+    password: z.string().min(6).max(100).meta({ example: 'Password123' }),
+    password_confirm: z.string().min(6).max(100).meta({ example: 'Password123' }),
+    address: userAddressSchema
+})
+
+export { saveUserSchema, userAddressSchema, userSchema }

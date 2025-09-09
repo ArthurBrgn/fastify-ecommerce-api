@@ -1,5 +1,9 @@
 import { patchProfileHandler, profileHandler } from '@/controllers/userController'
-import { UserProfilePatchRequest, userProfileResponseSchema } from '@/schemas/user/profileSchema'
+import {
+    UserProfilePatchRequest,
+    userProfilePatchSchema,
+    userProfileResponseSchema
+} from '@/schemas/user/profileSchema'
 import { FastifyInstance } from 'fastify'
 
 export default function userRoutes(server: FastifyInstance) {
@@ -16,7 +20,10 @@ export default function userRoutes(server: FastifyInstance) {
         '/me',
         {
             onRequest: [server.authenticate],
-            schema: { response: { 200: userProfileResponseSchema } }
+            schema: {
+                body: userProfilePatchSchema,
+                response: { 200: userProfileResponseSchema }
+            }
         },
         patchProfileHandler
     )
