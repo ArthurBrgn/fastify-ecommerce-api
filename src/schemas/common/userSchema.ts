@@ -1,7 +1,8 @@
 import z from 'zod'
+import modeldentifierSchema from './modeldentifierSchema'
 
 const userSchema = z.object({
-    id: z.number(),
+    id: modeldentifierSchema,
     name: z.string(),
     email: z.email(),
     street: z.string(),

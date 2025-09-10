@@ -6,8 +6,7 @@ const loginSchema = z.object({
     password: z.string().meta({ example: 'Password123' })
 })
 
-const registerSchema = z
-saveUserSchema.refine((data) => data.password === data.password_confirm, {
+const registerSchema = saveUserSchema.refine((data) => data.password === data.password_confirm, {
     message: 'Passwords must match',
     path: ['password_confirm']
 })

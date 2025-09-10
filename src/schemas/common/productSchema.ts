@@ -1,8 +1,9 @@
 import { z } from 'zod'
 import { categorySchema } from './categorySchema'
+import modeldentifierSchema from './modeldentifierSchema'
 
 export const baseProductSchema = z.object({
-    id: z.number().int().meta({ example: 1 }),
+    id: modeldentifierSchema,
     name: z.string(),
     slug: z.string(),
     description: z.string().nullable(),
