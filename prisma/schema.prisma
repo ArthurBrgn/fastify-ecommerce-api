@@ -45,7 +45,7 @@ model Category {
 model Order {
   id         Int         @id @default(autoincrement())
   userId     Int
-  user       User        @relation(fields: [userId], references: [id])
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   orderItems OrderItem[]
   total      Float
   createdAt  DateTime    @default(now())
@@ -55,7 +55,7 @@ model OrderItem {
   id        Int     @id @default(autoincrement())
   orderId   Int
   productId Int
-  order     Order   @relation(fields: [orderId], references: [id])
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product   Product @relation(fields: [productId], references: [id])
   quantity  Int
   price     Float
@@ -63,7 +63,7 @@ model OrderItem {
 
 model Cart {
   id        Int        @id @default(autoincrement())
-  user      User       @relation(fields: [userId], references: [id])
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int        @unique
   items     CartItem[]
   createdAt DateTime   @default(now())
@@ -72,7 +72,7 @@ model Cart {
 
 model CartItem {
   id        Int     @id @default(autoincrement())
-  cart      Cart    @relation(fields: [cartId], references: [id])
+  cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
   cartId    Int
   product   Product @relation(fields: [productId], references: [id])
   productId Int

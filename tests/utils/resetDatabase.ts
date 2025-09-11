@@ -4,4 +4,5 @@ export async function resetDatabase(prisma: AppPrismaClient) {
     await prisma.user.deleteMany({})
     await prisma.category.deleteMany({})
     await prisma.product.deleteMany({})
+    await prisma.cart.deleteMany({})
 }
