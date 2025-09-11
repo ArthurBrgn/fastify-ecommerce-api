@@ -1,10 +1,12 @@
 import { z } from 'zod'
-import modeldentifierSchema from './modeldentifierSchema'
+import modelIdentifierSchema from './modelIdentifierSchema'
 
-export const categorySchema = z.object({
-    id: modeldentifierSchema,
+const categorySchema = z.object({
+    id: modelIdentifierSchema,
     name: z.string(),
     slug: z.string()
 })
 
-export type Category = z.infer<typeof categorySchema>
+type Category = z.infer<typeof categorySchema>
+
+export { Category, categorySchema }

@@ -1,4 +1,4 @@
-import { ProfileException } from '@/exceptions/auth/ProfileException'
+import { RecordNotFoundException } from '@/exceptions/RecordNotFoundException'
 import { AppPrismaClient } from '@/plugins/prismaPlugin'
 import { UserProfilePatchRequest } from '@/schemas/user/profileSchema'
 import { Prisma } from '@prisma/client'
@@ -6,7 +6,7 @@ import { hash } from 'bcryptjs'
 
 export async function getUserInfoById(prisma: AppPrismaClient, userId: number) {
     const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } }).catch(() => {
-        throw new ProfileException('User not found', 404)
+        throw new RecordNotFoundException('User not found')
     })
 
     return user

@@ -1,20 +1,22 @@
 import { z } from 'zod'
 import { categorySchema } from './categorySchema'
-import modeldentifierSchema from './modeldentifierSchema'
+import modelIdentifierSchema from './modelIdentifierSchema'
 
-export const baseProductSchema = z.object({
-    id: modeldentifierSchema,
+const baseProductSchema = z.object({
+    id: modelIdentifierSchema,
     name: z.string(),
     slug: z.string(),
     description: z.string().nullable(),
     price: z.number(),
-    stock: z.number().int().meta({ example: 25 }),
+    stock: z.int().meta({ example: 25 }),
     createdAt: z.date()
 })
 
-export const productWithCategorySchema = baseProductSchema.extend({
+const productWithCategorySchema = baseProductSchema.extend({
     category: categorySchema
 })
 
-export type Product = z.infer<typeof baseProductSchema>
-export type ProductWithCategory = z.infer<typeof productWithCategorySchema>
+type Product = z.infer<typeof baseProductSchema>
+type ProductWithCategory = z.infer<typeof productWithCategorySchema>
+
+export { baseProductSchema, Product, ProductWithCategory, productWithCategorySchema }
