@@ -1,8 +1,15 @@
-import { addProductToCartHandler } from '@/controllers/cartController'
+import {
+    addProductToCartHandler,
+    incrementCartItemQuantityHandler
+} from '@/controllers/cartController'
 import {
     AddProductToCartRequest,
     addProductToCartSchema
 } from '@/schemas/cart/addProductToCartSchema'
+import {
+    UpdateCartItemQuantityParams,
+    updateCartItemQuantityParamsSchema
+} from '@/schemas/cart/updateCartItemQuantity'
 import { cartResponseSchema } from '@/schemas/common/cartSchema'
 import { FastifyInstance } from 'fastify'
 
@@ -19,5 +26,16 @@ export default function cartRoutes(server: FastifyInstance) {
             }
         },
         addProductToCartHandler
+    )
+
+    server.patch<{ Params: UpdateCartItemQuantityParams }>(
+        '/items/:productId/increment',
+        {
+            onRequest: [server.authenticate],
+            schema: {
+                params: updateCartItemQuantityParamsSchema
+            }
+        },
+        incrementCartItemQuantityHandler
     )
 }
