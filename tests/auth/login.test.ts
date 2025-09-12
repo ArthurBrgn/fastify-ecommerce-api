@@ -41,9 +41,7 @@ describe('POST /api/login', () => {
         supertest(server.server).post('/api/login').send(payload)
 
     it('should return 200 and a token for valid credentials', async () => {
-        const response = await postLogin({ email: testEmail, password: testPassword })
-
-        const { status, body } = response
+        const { status, body } = await postLogin({ email: testEmail, password: testPassword })
 
         expect(status).toBe(200)
 
@@ -52,17 +50,18 @@ describe('POST /api/login', () => {
     })
 
     it('should return 401 for invalid credentials', async () => {
-        const response = await postLogin({ email: 'fake@example.com', password: 'wrongpassword' })
+        const { status, body } = await postLogin({
+            email: 'fake@example.com',
+            password: 'wrongpassword'
+        })
 
-        expect(response.status).toBe(401)
+        expect(status).toBe(401)
 
-        expect(response.body).toHaveProperty('message', 'Invalid email or password')
+        expect(body).toHaveProperty('message', 'Invalid email or password')
     })
 
     it('should return 422 when email format is invalid', async () => {
-        const response = await postLogin({ email: 'not-an-email', password: testPassword })
-
-        const { status, body } = response
+        const { status, body } = await postLogin({ email: 'not-an-email', password: testPassword })
 
         expect(status).toBe(422)
 

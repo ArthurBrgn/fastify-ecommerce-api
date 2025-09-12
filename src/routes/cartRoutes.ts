@@ -1,16 +1,15 @@
 import {
     addProductToCartHandler,
+    decrementCartItemQuantityHandler,
+    deleteCartItemHandler,
     incrementCartItemQuantityHandler
 } from '@/controllers/cartController'
 import {
     AddProductToCartRequest,
     addProductToCartSchema
 } from '@/schemas/cart/addProductToCartSchema'
-import {
-    UpdateCartItemQuantityParams,
-    updateCartItemQuantityParamsSchema
-} from '@/schemas/cart/updateCartItemQuantity'
-import { cartResponseSchema } from '@/schemas/common/cartSchema'
+import { CartItemParamsSchema, cartItemsParamsSchema } from '@/schemas/cart/cartItemParamsSchema'
+import { cartResponseSchema } from '@/schemas/cart/cartResponseSchema'
 import { FastifyInstance } from 'fastify'
 
 export default function cartRoutes(server: FastifyInstance) {
@@ -28,14 +27,39 @@ export default function cartRoutes(server: FastifyInstance) {
         addProductToCartHandler
     )
 
-    server.patch<{ Params: UpdateCartItemQuantityParams }>(
+    server.patch<{ Params: CartItemParamsSchema }>(
         '/items/:productId/increment',
         {
             onRequest: [server.authenticate],
             schema: {
-                params: updateCartItemQuantityParamsSchema
+                params: cartItemsParamsSchema,
+                response: { 200: cartResponseSchema }
             }
         },
         incrementCartItemQuantityHandler
+    )
+
+    server.patch<{ Params: CartItemParamsSchema }>(
+        '/items/:productId/decrement',
+        {
+            onRequest: [server.authenticate],
+            schema: {
+                params: cartItemsParamsSchema,
+                response: { 200: cartResponseSchema }
+            }
+        },
+        decrementCartItemQuantityHandler
+    )
+
+    server.delete<{ Params: CartItemParamsSchema }>(
+        '/items/:productId',
+        {
+            onRequest: [server.authenticate],
+            schema: {
+                params: cartItemsParamsSchema,
+                response: { 200: cartResponseSchema }
+            }
+        },
+        deleteCartItemHandler
     )
 }

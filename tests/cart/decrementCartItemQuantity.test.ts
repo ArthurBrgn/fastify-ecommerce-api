@@ -4,7 +4,7 @@ import { hash } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import supertest from 'supertest'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import { resetDatabase } from './../utils/resetDatabase'
+import { resetDatabase } from '../utils/resetDatabase'
 
 let server: FastifyInstance
 let token: string
@@ -13,9 +13,9 @@ let category: Category
 let product: Product
 let cartId: number
 
-const incrementCartItemQuantity = (productId: number, authToken?: string) =>
+const decrementCartItemQuantity = (productId: number, authToken?: string) =>
     supertest(server.server)
-        .patch(`/api/cart/items/${productId}/increment`)
+        .patch(`/api/cart/items/${productId}/decrement`)
         .set('Authorization', authToken ? `Bearer ${authToken}` : '')
 
 beforeAll(async () => {
@@ -73,9 +73,9 @@ afterAll(async () => {
     await server.close()
 })
 
-describe('PATCH /api/cart/items/:productId/increment', () => {
-    it('should increment the quantity of a product in the cart', async () => {
-        const { status, body } = await incrementCartItemQuantity(product.id, token)
+describe('PATCH /api/cart/items/:productId/decrement', () => {
+    it('should decrement the quantity of a product in the cart', async () => {
+        const { status, body } = await decrementCartItemQuantity(product.id, token)
 
         expect(status).toBe(200)
 
@@ -85,41 +85,42 @@ describe('PATCH /api/cart/items/:productId/increment', () => {
             name: product.name,
             slug: product.slug,
             price: product.price,
-            quantity: 3,
-            total: 30
+            quantity: 1,
+            total: 10
         })
 
-        expect(body.total).toBe(30)
+        expect(body.total).toBe(10)
+    })
+
+    it('should remove the product from the cart if quantity reaches 0', async () => {
+        await server.prisma.cartItem.update({
+            where: { cartId_productId: { cartId, productId: product.id } },
+            data: { quantity: 1 }
+        })
+
+        const { status, body } = await decrementCartItemQuantity(product.id, token)
+
+        expect(status).toBe(200)
+        expect(body.items).toHaveLength(0)
+        expect(body.total).toBe(0)
     })
 
     it('should return 404 if product not in cart', async () => {
-        const { status, body } = await incrementCartItemQuantity(99999, token)
+        const { status, body } = await decrementCartItemQuantity(99999, token)
 
         expect(status).toBe(404)
         expect(body).toHaveProperty('message', 'Product not in cart')
     })
 
-    it('should return 409 if stock is exceeded', async () => {
-        await server.prisma.cartItem.update({
-            where: { cartId_productId: { cartId, productId: product.id } },
-            data: { quantity: 5 }
-        })
-
-        const { status, body } = await incrementCartItemQuantity(product.id, token)
-
-        expect(status).toBe(409)
-        expect(body.message).toContain('Not enough stock')
-    })
-
     it('should return 401 if token is missing', async () => {
-        const { status, body } = await incrementCartItemQuantity(product.id)
+        const { status, body } = await decrementCartItemQuantity(product.id)
 
         expect(status).toBe(401)
         expect(body).toHaveProperty('message')
     })
 
     it('should return 401 if token is invalid', async () => {
-        const { status, body } = await incrementCartItemQuantity(product.id, 'Invalid token')
+        const { status, body } = await decrementCartItemQuantity(product.id, 'Invalid token')
 
         expect(status).toBe(401)
         expect(body).toHaveProperty('message')

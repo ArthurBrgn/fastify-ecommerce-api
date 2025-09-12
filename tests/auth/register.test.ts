@@ -1,5 +1,5 @@
 import { buildApp } from '@/app'
-import type { RegisterRequest, RegisterResponse } from '@/schemas/authSchema'
+import type { RegisterRequest } from '@/schemas/authSchema'
 import { hash } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import supertest from 'supertest'
@@ -41,20 +41,16 @@ afterAll(async () => {
 
 describe('POST /api/register', () => {
     it('should success and return user data and token', async () => {
-        const response = await postRegister(userData)
+        const { status, body } = await postRegister(userData)
 
-        const body: RegisterResponse = response.body
-
-        const { user } = body
-
-        expect(response.status).toBe(201)
+        expect(status).toBe(201)
 
         expect(body).toHaveProperty('token')
         expect(body).toHaveProperty('user')
 
         expect(typeof body.token).toBe('string')
 
-        expect(user).toMatchObject({
+        expect(body.user).toMatchObject({
             id: expect.any(Number),
             name: userData.name,
             email: userData.email,
@@ -64,7 +60,7 @@ describe('POST /api/register', () => {
             zipcode: userData.address.zipcode
         })
 
-        expect(user).not.toHaveProperty('password')
+        expect(body.user).not.toHaveProperty('password')
     })
 
     it('should return 409 if email already exists', async () => {
@@ -77,11 +73,11 @@ describe('POST /api/register', () => {
             }
         })
 
-        const response = await postRegister(userData)
+        const { status, body } = await postRegister(userData)
 
-        expect(response.status).toBe(409)
+        expect(status).toBe(409)
 
-        expect(response.body).toHaveProperty('message', 'Email already in use')
+        expect(body).toHaveProperty('message', 'Email already in use')
     })
 
     it('should return 422 for invalid data', async () => {
@@ -92,12 +88,12 @@ describe('POST /api/register', () => {
             address: { ...userData.address, city: 'City123', zipcode: '1' }
         }
 
-        const response = await postRegister(invalidData)
+        const { status, body } = await postRegister(invalidData)
 
-        expect(response.status).toBe(422)
+        expect(status).toBe(422)
 
-        expect(response.body.errors).toBeInstanceOf(Array)
-        expect(response.body.errors).toEqual(
+        expect(body.errors).toBeInstanceOf(Array)
+        expect(body.errors).toEqual(
             expect.arrayContaining([
                 expect.objectContaining({ field: 'email', message: 'Invalid email address' }),
                 expect.objectContaining({ field: 'name', message: expect.any(String) }),
@@ -116,12 +112,12 @@ describe('POST /api/register', () => {
             password_confirm: 'DifferentPassword'
         }
 
-        const response = await postRegister(mismatchData)
+        const { status, body } = await postRegister(mismatchData)
 
-        expect(response.status).toBe(422)
+        expect(status).toBe(422)
 
-        expect(response.body.errors).toBeInstanceOf(Array)
-        expect(response.body.errors).toEqual(
+        expect(body.errors).toBeInstanceOf(Array)
+        expect(body.errors).toEqual(
             expect.arrayContaining([
                 expect.objectContaining({
                     field: 'password_confirm',

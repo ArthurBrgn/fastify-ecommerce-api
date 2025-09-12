@@ -1,5 +1,5 @@
+import modelIdentifierSchema from '@/schemas/common/modelIdentifierSchema'
 import z from 'zod'
-import modelIdentifierSchema from './modelIdentifierSchema'
 
 const cartResponseSchema = z.object({
     items: z.array(
