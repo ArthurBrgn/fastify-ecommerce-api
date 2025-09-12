@@ -15,4 +15,6 @@ const cartResponseSchema = z.object({
     total: z.number()
 })
 
-export { cartResponseSchema }
+type CartResponse = z.infer<typeof cartResponseSchema>
+
+export { CartResponse, cartResponseSchema }

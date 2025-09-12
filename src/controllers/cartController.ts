@@ -2,7 +2,6 @@ import { AddProductToCartRequest } from '@/schemas/cart/addProductToCartSchema'
 import { CartItemParamsSchema } from '@/schemas/cart/cartItemParamsSchema'
 import { addProductToCart } from '@/services/cart/addProductToCartService'
 import { deleteCartItem } from '@/services/cart/deleteCartItemService'
-import { getCartForUser } from '@/services/cart/getUserCartService'
 import {
     decrementCartItemQuantity,
     incrementCartItemQuantity
@@ -15,7 +14,7 @@ export async function addProductToCartHandler(
 ) {
     await addProductToCart(request.server.prisma, request.body, request.user.id)
 
-    const cart = await getCartForUser(request.server.prisma, request.user.id)
+    const cart = await request.getUserCart()
 
     return reply.status(200).send(cart)
 }
@@ -30,7 +29,7 @@ export async function incrementCartItemQuantityHandler(
         request.user.id
     )
 
-    const cart = await getCartForUser(request.server.prisma, request.user.id)
+    const cart = await request.getUserCart()
 
     return reply.status(200).send(cart)
 }
@@ -45,7 +44,7 @@ export async function decrementCartItemQuantityHandler(
         request.user.id
     )
 
-    const cart = await getCartForUser(request.server.prisma, request.user.id)
+    const cart = await request.getUserCart()
 
     return reply.status(200).send(cart)
 }
@@ -56,7 +55,7 @@ export async function deleteCartItemHandler(
 ) {
     await deleteCartItem(request.server.prisma, request.params.productId, request.user.id)
 
-    const cart = await getCartForUser(request.server.prisma, request.user.id)
+    const cart = await request.getUserCart()
 
     return reply.status(200).send(cart)
 }

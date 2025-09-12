@@ -5,6 +5,7 @@ import swaggerPlugin from '@/plugins/swaggerPlugin'
 import routes from '@/routes'
 import Fastify from 'fastify'
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod'
+import getAuthenticatedUserCartPlugin from './plugins/getAuthenticatedUserCartPlugin'
 
 export async function buildApp() {
     const server = Fastify({
@@ -18,6 +19,7 @@ export async function buildApp() {
     server.register(jwtPlugin)
     server.register(prismaPlugin)
     server.register(errorHandlerPlugin)
+    server.register(getAuthenticatedUserCartPlugin)
 
     await server.register(swaggerPlugin)
 
