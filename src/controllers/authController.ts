@@ -6,10 +6,10 @@ export async function loginHandler(
     request: FastifyRequest<{ Body: LoginRequest }>,
     reply: FastifyReply
 ) {
-    const user = await loginUser(request.server.prisma, request.body)
+    const userId = await loginUser(request.server.prisma, request.body)
 
     const token = await reply.jwtSign({
-        id: user.id
+        id: userId
     })
 
     return reply.send({ token })

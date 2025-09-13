@@ -34,36 +34,37 @@ export default async function createOrder(
         throw new CartEmptyException()
     }
 
-    // Check stock for each product
+    // Check product stock for each cart item
     for (const item of cart.items) {
         if (item.quantity > item.product.stock) {
             throw new ProductOutOfStockException(`Product ${item.productId} is out of stock`)
         }
     }
 
+    // Total order price
     const rawOrderTotal = cart.items.reduce(
-        (sum, item) => sum + item.quantity * item.product.price,
+        (sum, item) => sum + roundPrice(item.product.price * item.quantity),
         0
     )
 
-    const createdOrder = await prisma.$transaction(async (tx) => {
-        const order = await tx.order.create({
+    const order = await prisma.$transaction(async (tx) => {
+        const createdOrder = await tx.order.create({
             data: {
                 userId,
-                total: roundPrice(rawOrderTotal)
+                total: rawOrderTotal
             }
         })
 
         await tx.orderItem.createMany({
             data: cart.items.map((item) => ({
-                orderId: order.id,
+                orderId: createdOrder.id,
                 productId: item.productId,
                 quantity: item.quantity,
                 price: roundPrice(item.product.price)
             }))
         })
 
-        // Decrement product stock for each cartItem
+        // Decrement products stock
         for (const item of cart.items) {
             await tx.product.update({
                 where: { id: item.productId },
@@ -71,11 +72,11 @@ export default async function createOrder(
             })
         }
 
-        // Delete cart
         await tx.cart.delete({ where: { id: cart.id } })
 
-        const createdOrder = await tx.order.findUnique({
-            where: { id: order.id },
+        // Get order with items
+        const fullOrder = await tx.order.findUnique({
+            where: { id: createdOrder.id },
             select: {
                 id: true,
                 total: true,
@@ -90,18 +91,18 @@ export default async function createOrder(
             }
         })
 
-        if (!createdOrder) {
+        if (!fullOrder) {
             throw new RecordNotFoundException('Order not found')
         }
 
-        return createdOrder
+        return fullOrder
     })
 
     return {
-        id: createdOrder.id,
-        total: createdOrder.total,
-        createdAt: createdOrder.createdAt,
-        items: createdOrder.orderItems.map((item) => ({
+        id: order.id,
+        total: order.total,
+        createdAt: order.createdAt,
+        items: order.orderItems.map((item) => ({
             productId: item.productId,
             quantity: item.quantity,
             price: item.price,

@@ -4,14 +4,16 @@ import { AppPrismaClient } from '@/plugins/prismaPlugin'
 import { LoginRequest, RegisterRequest } from '@/schemas/authSchema'
 import bcrypt from 'bcryptjs'
 
-export async function loginUser(prisma: AppPrismaClient, loginRequest: LoginRequest) {
+export async function loginUser(
+    prisma: AppPrismaClient,
+    loginRequest: LoginRequest
+): Promise<number> {
     const { email, password } = loginRequest
 
     const user = await prisma.user.findUnique({
         where: { email },
         select: {
             id: true,
-            email: true,
             password: true
         }
     })
@@ -26,7 +28,7 @@ export async function loginUser(prisma: AppPrismaClient, loginRequest: LoginRequ
         throw new AuthenticationException()
     }
 
-    return user
+    return user.id
 }
 
 export async function registerUser(prisma: AppPrismaClient, registerRequest: RegisterRequest) {
