@@ -1,8 +1,8 @@
 import z from 'zod'
-import modelIdentifierSchema from '../common/modelIdentifierSchema'
+import { identifierSchema } from '../common/identifierSchema'
 
 const addProductToCartSchema = z.object({
-    productId: modelIdentifierSchema,
+    productId: identifierSchema,
     quantity: z.int().positive()
 })
 

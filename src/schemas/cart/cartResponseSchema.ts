@@ -1,12 +1,12 @@
-import modelIdentifierSchema from '@/schemas/common/modelIdentifierSchema'
 import z from 'zod'
+import { identifierSchema } from '../common/identifierSchema'
 
 const cartResponseSchema = z.object({
     items: z.array(
         z.object({
-            id: modelIdentifierSchema,
+            id: identifierSchema,
             product: z.object({
-                id: modelIdentifierSchema,
+                id: identifierSchema,
                 name: z.string(),
                 slug: z.string(),
                 price: z.number()

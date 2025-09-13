@@ -1,9 +1,8 @@
 import { productWithCategorySchema } from '@/schemas/common/productSchema'
 import { z } from 'zod'
+import { identifierParamSchema } from '../common/identifierSchema'
 
-const viewProductSchema = z.object({
-    id: z.coerce.number().int().positive().meta({ example: 1 })
-})
+const viewProductSchema = identifierParamSchema
 
 const viewProductResponseSchema = productWithCategorySchema
 

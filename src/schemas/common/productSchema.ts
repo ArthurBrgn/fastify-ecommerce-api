@@ -1,9 +1,9 @@
 import { z } from 'zod'
 import { categorySchema } from './categorySchema'
-import modelIdentifierSchema from './modelIdentifierSchema'
+import { identifierSchema } from './identifierSchema'
 
 const baseProductSchema = z.object({
-    id: modelIdentifierSchema,
+    id: identifierSchema,
     name: z.string(),
     slug: z.string(),
     description: z.string().nullable(),

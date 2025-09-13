@@ -1,8 +1,20 @@
-import { createOrderHandler } from '@/controllers/orderController'
-import { orderResponseSchema } from '@/schemas/order/orderResponseSchema'
+import { createOrderHandler, viewOrderHandler } from '@/controllers/orderController'
+import { orderResponseSchema, ViewOrderRequest, viewOrderSchema } from '@/schemas/order/orderSchema'
 import { FastifyInstance } from 'fastify'
 
 export default async function orderRoutes(server: FastifyInstance) {
+    server.get<{ Params: ViewOrderRequest }>(
+        '/:id',
+        {
+            onRequest: [server.authenticate],
+            schema: {
+                params: viewOrderSchema,
+                response: { 200: orderResponseSchema }
+            }
+        },
+        viewOrderHandler
+    )
+
     server.post(
         '/',
         {

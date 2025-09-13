@@ -1,11 +1,11 @@
 import { buildApp } from '@/app'
+import { OrderResponse } from '@/schemas/order/orderSchema'
 import { Category, Product, User } from '@prisma/client'
 import { hash } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import supertest from 'supertest'
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { resetDatabase } from './../utils/resetDatabase'
-import { OrderResponse } from '@/schemas/order/orderResponseSchema'
 
 let server: FastifyInstance
 let token: string

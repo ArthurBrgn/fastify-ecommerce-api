@@ -2,8 +2,9 @@ import { CartEmptyException } from '@/exceptions/cart/CartEmptyException'
 import { ProductOutOfStockException } from '@/exceptions/cart/ProductOutOfStockException'
 import { RecordNotFoundException } from '@/exceptions/RecordNotFoundException'
 import { AppPrismaClient } from '@/plugins/prismaPlugin'
-import { OrderResponse } from '@/schemas/order/orderResponseSchema'
+import { OrderResponse } from '@/schemas/order/orderSchema'
 import roundPrice from '@/utils/roundPrice'
+import getFormattedOrderDetailsById from './orderService'
 
 export default async function createOrder(
     prisma: AppPrismaClient,
@@ -74,39 +75,8 @@ export default async function createOrder(
 
         await tx.cart.delete({ where: { id: cart.id } })
 
-        // Get order with items
-        const fullOrder = await tx.order.findUnique({
-            where: { id: createdOrder.id },
-            select: {
-                id: true,
-                total: true,
-                createdAt: true,
-                orderItems: {
-                    select: {
-                        productId: true,
-                        quantity: true,
-                        price: true
-                    }
-                }
-            }
-        })
-
-        if (!fullOrder) {
-            throw new RecordNotFoundException('Order not found')
-        }
-
-        return fullOrder
+        return createdOrder
     })
 
-    return {
-        id: order.id,
-        total: order.total,
-        createdAt: order.createdAt,
-        items: order.orderItems.map((item) => ({
-            productId: item.productId,
-            quantity: item.quantity,
-            price: item.price,
-            total: roundPrice(item.price * item.quantity)
-        }))
-    }
+    return getFormattedOrderDetailsById(prisma, order.id)
 }

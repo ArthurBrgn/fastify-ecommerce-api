@@ -1,7 +1,7 @@
 import { paginationMetaSchema, paginationRequestSchema } from '@/schemas/common/paginationSchema'
 import { baseProductSchema } from '@/schemas/common/productSchema'
 import { z } from 'zod'
-import modelIdentifierSchema from '../common/modelIdentifierSchema'
+import { identifierSchema } from '../common/identifierSchema'
 
 const searchProductsSchema = paginationRequestSchema
     .extend({
@@ -24,7 +24,7 @@ const searchProductsSchema = paginationRequestSchema
 
 const searchProductsResponseSchema = z.object({
     meta: paginationMetaSchema,
-    data: z.array(baseProductSchema.extend({ categoryId: modelIdentifierSchema }))
+    data: z.array(baseProductSchema.extend({ categoryId: identifierSchema }))
 })
 
 type SearchProductsRequest = z.infer<typeof searchProductsSchema>
