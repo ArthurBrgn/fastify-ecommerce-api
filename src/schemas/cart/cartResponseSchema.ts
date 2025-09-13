@@ -4,10 +4,13 @@ import z from 'zod'
 const cartResponseSchema = z.object({
     items: z.array(
         z.object({
-            productId: modelIdentifierSchema,
-            name: z.string(),
-            slug: z.string(),
-            price: z.number(),
+            id: modelIdentifierSchema,
+            product: z.object({
+                id: modelIdentifierSchema,
+                name: z.string(),
+                slug: z.string(),
+                price: z.number()
+            }),
             quantity: z.int().positive(),
             total: z.number()
         })

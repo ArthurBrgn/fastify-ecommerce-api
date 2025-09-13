@@ -81,10 +81,12 @@ describe('PATCH /api/cart/items/:productId/increment', () => {
 
         expect(body.items).toHaveLength(1)
         expect(body.items[0]).toMatchObject({
-            productId: product.id,
-            name: product.name,
-            slug: product.slug,
-            price: product.price,
+            product: {
+                id: product.id,
+                name: product.name,
+                slug: product.slug,
+                price: product.price
+            },
             quantity: 3,
             total: 30
         })

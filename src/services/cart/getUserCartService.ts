@@ -1,13 +1,17 @@
 import { AppPrismaClient } from '@/plugins/prismaPlugin'
+import { CartResponse } from '@/schemas/cart/cartResponseSchema'
+import roundPrice from '@/utils/roundPrice'
 
-export async function getCartForUser(prisma: AppPrismaClient, userId: number) {
+export async function getCartForUser(
+    prisma: AppPrismaClient,
+    userId: number
+): Promise<CartResponse> {
     const cart = await prisma.cart.findUnique({
         where: { userId },
         select: {
             items: {
                 select: {
                     id: true,
-                    productId: true,
                     quantity: true,
                     product: {
                         select: { id: true, name: true, price: true, slug: true }
@@ -21,20 +25,14 @@ export async function getCartForUser(prisma: AppPrismaClient, userId: number) {
         return { items: [], total: 0 }
     }
 
-    const formattedCart = {
-        items: cart.items.map((item) => ({
-            id: item.id,
-            productId: item.productId,
-            name: item.product.name,
-            slug: item.product.slug,
-            price: item.product.price,
-            quantity: item.quantity,
-            total: Number((item.product.price * item.quantity).toFixed(2))
-        })),
-        total: Number(
-            cart.items.reduce((sum, item) => sum + item.quantity * item.product.price, 0).toFixed(2)
-        )
-    }
+    const items = cart.items.map((item) => {
+        return {
+            ...item,
+            total: roundPrice(item.product.price * item.quantity)
+        }
+    })
 
-    return formattedCart
+    const total = roundPrice(items.reduce((sum, item) => sum + item.total, 0))
+
+    return { items, total }
 }

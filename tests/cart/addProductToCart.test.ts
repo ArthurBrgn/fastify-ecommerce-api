@@ -65,10 +65,12 @@ describe('POST /api/cart/items', () => {
         expect(status).toBe(200)
         expect(body.items).toHaveLength(1)
         expect(body.items[0]).toMatchObject({
-            productId: product.id,
-            name: product.name,
-            slug: product.slug,
-            price: product.price,
+            product: {
+                id: product.id,
+                name: product.name,
+                slug: product.slug,
+                price: product.price
+            },
             quantity: 2,
             total: 20
         })
