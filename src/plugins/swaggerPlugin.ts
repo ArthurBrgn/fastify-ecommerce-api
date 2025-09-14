@@ -17,6 +17,11 @@ export default fp(async (server) => {
                         type: 'http',
                         scheme: 'bearer',
                         bearerFormat: 'JWT'
+                    },
+                    refreshTokenCookie: {
+                        type: 'apiKey',
+                        in: 'cookie',
+                        name: 'refreshToken'
                     }
                 }
             },

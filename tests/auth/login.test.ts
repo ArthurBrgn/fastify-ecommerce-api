@@ -36,9 +36,9 @@ afterAll(async () => {
     await server.close()
 })
 
-describe('POST /api/login', () => {
+describe('POST /api/auth/login', () => {
     const postLogin = (payload: LoginRequest) =>
-        supertest(server.server).post('/api/login').send(payload)
+        supertest(server.server).post('/api/auth/login').send(payload)
 
     it('should return 200 and a token for valid credentials', async () => {
         const response = await postLogin({ email: testEmail, password: testPassword })

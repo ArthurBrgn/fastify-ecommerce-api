@@ -25,3 +25,15 @@ export async function registerHandler(
 
     return reply.code(201).setRefreshTokenCookie(refreshToken).send({ user, accessToken })
 }
+
+export async function refreshAccessTokenHandler(request: FastifyRequest, reply: FastifyReply) {
+    try {
+        await request.jwtVerify({ onlyCookie: true })
+    } catch {
+        return reply.code(401).send({ message: 'Unauthorized action' })
+    }
+
+    const accessToken = await reply.jwtSign({ id: request.user.id })
+
+    return reply.send({ accessToken })
+}

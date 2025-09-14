@@ -1,7 +1,12 @@
-import { loginHandler, registerHandler } from '@/controllers/authController'
+import {
+    loginHandler,
+    refreshAccessTokenHandler,
+    registerHandler
+} from '@/controllers/authController'
 import {
     loginResponseSchema,
     loginSchema,
+    refreshAccessTokenResponseSchema,
     registerResponseSchema,
     registerSchema
 } from '@/schemas/authSchema'
@@ -10,7 +15,14 @@ import { FastifyInstance } from 'fastify'
 export default function authRoutes(server: FastifyInstance) {
     server.post(
         '/login',
-        { schema: { security: [], body: loginSchema, response: { 200: loginResponseSchema } } },
+        {
+            schema: {
+                tags: ['Auth'],
+                security: [],
+                body: loginSchema,
+                response: { 200: loginResponseSchema }
+            }
+        },
         loginHandler
     )
 
@@ -18,11 +30,24 @@ export default function authRoutes(server: FastifyInstance) {
         '/register',
         {
             schema: {
+                tags: ['Auth'],
                 security: [],
                 body: registerSchema,
                 response: { 201: registerResponseSchema }
             }
         },
         registerHandler
+    )
+
+    server.get(
+        '/refresh',
+        {
+            schema: {
+                tags: ['Auth'],
+                security: [{ refreshTokenCookie: [] }],
+                response: { 200: refreshAccessTokenResponseSchema }
+            }
+        },
+        refreshAccessTokenHandler
     )
 }

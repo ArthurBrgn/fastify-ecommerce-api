@@ -24,7 +24,7 @@ const userData: RegisterRequest = {
 }
 
 const postRegister = (payload: RegisterRequest) =>
-    supertest(server.server).post('/api/register').send(payload)
+    supertest(server.server).post('/api/auth/register').send(payload)
 
 beforeAll(async () => {
     server = await buildApp()
@@ -39,7 +39,7 @@ afterAll(async () => {
     await server.close()
 })
 
-describe('POST /api/register', () => {
+describe('POST /api/auth/register', () => {
     it('should success and return user data and token', async () => {
         const response = await postRegister(userData)
 

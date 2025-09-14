@@ -18,6 +18,7 @@ export default function cartRoutes(server: FastifyInstance) {
         {
             onRequest: [server.authenticate],
             schema: {
+                tags: ['Cart'],
                 body: addProductToCartSchema,
                 response: {
                     200: cartResponseSchema
@@ -32,6 +33,7 @@ export default function cartRoutes(server: FastifyInstance) {
         {
             onRequest: [server.authenticate],
             schema: {
+                tags: ['Cart'],
                 params: cartItemsParamsSchema,
                 response: { 200: cartResponseSchema }
             }
@@ -44,6 +46,7 @@ export default function cartRoutes(server: FastifyInstance) {
         {
             onRequest: [server.authenticate],
             schema: {
+                tags: ['Cart'],
                 params: cartItemsParamsSchema,
                 response: { 200: cartResponseSchema }
             }
@@ -56,6 +59,7 @@ export default function cartRoutes(server: FastifyInstance) {
         {
             onRequest: [server.authenticate],
             schema: {
+                tags: ['Cart'],
                 params: cartItemsParamsSchema,
                 response: { 200: cartResponseSchema }
             }

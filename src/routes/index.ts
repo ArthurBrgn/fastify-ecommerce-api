@@ -6,7 +6,7 @@ import orderRoutes from './orderRoutes'
 import userRoutes from './userRoutes'
 
 export default function routes(server: FastifyInstance) {
-    server.register(authRoutes)
+    server.register(authRoutes, { prefix: '/auth' })
     server.register(productRoutes, { prefix: '/products' })
     server.register(userRoutes, { prefix: '/users' })
     server.register(cartRoutes, { prefix: '/cart' })

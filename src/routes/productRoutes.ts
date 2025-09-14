@@ -17,6 +17,7 @@ export default function productRoutes(server: FastifyInstance) {
         {
             onRequest: [server.authenticate],
             schema: {
+                tags: ['Product'],
                 querystring: searchProductsSchema,
                 response: { 200: searchProductsResponseSchema }
             }
@@ -29,6 +30,7 @@ export default function productRoutes(server: FastifyInstance) {
         {
             onRequest: [server.authenticate],
             schema: {
+                tags: ['Product'],
                 params: viewProductSchema,
                 response: { 200: viewProductResponseSchema }
             }

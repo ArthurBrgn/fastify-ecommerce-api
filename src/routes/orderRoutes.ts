@@ -8,6 +8,7 @@ export default async function orderRoutes(server: FastifyInstance) {
         {
             onRequest: [server.authenticate],
             schema: {
+                tags: ['Order'],
                 params: viewOrderSchema,
                 response: { 200: orderResponseSchema }
             }
@@ -19,7 +20,10 @@ export default async function orderRoutes(server: FastifyInstance) {
         '/',
         {
             onRequest: [server.authenticate],
-            schema: { response: { 201: orderResponseSchema } }
+            schema: {
+                tags: ['Order'],
+                response: { 201: orderResponseSchema }
+            }
         },
         createOrderHandler
     )

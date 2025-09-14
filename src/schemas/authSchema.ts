@@ -15,6 +15,8 @@ const loginResponseSchema = z.object({
     accessToken: z.string()
 })
 
+const refreshAccessTokenResponseSchema = loginResponseSchema
+
 const registerResponseSchema = z.object({
     accessToken: z.string(),
     user: userSchema
@@ -31,6 +33,7 @@ export {
     LoginResponse,
     loginResponseSchema,
     loginSchema,
+    refreshAccessTokenResponseSchema,
     RegisterRequest,
     RegisterResponse,
     registerResponseSchema,
