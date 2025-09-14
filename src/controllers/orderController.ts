@@ -9,11 +9,11 @@ export async function viewOrderHandler(
 ) {
     const order = await getOrderDetails(request.server.prisma, request.params.id)
 
-    return reply.status(200).send(order)
+    return reply.send(order)
 }
 
 export async function createOrderHandler(request: FastifyRequest, reply: FastifyReply) {
     const order = await createOrder(request.server.prisma, request.user.id)
 
-    return reply.status(201).send(order)
+    return reply.code(201).send(order)
 }

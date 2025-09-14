@@ -10,7 +10,7 @@ export async function searchProductsHandler(
 ) {
     const paginatedProducts = await searchProducts(request.server.prisma, request.query)
 
-    return reply.status(200).send(paginatedProducts)
+    return reply.send(paginatedProducts)
 }
 
 export async function viewProductHandler(
@@ -19,5 +19,5 @@ export async function viewProductHandler(
 ) {
     const product = await getProductDetailsById(request.server.prisma, request.params.id)
 
-    return reply.status(200).send(product)
+    return reply.send(product)
 }

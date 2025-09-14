@@ -41,12 +41,17 @@ describe('POST /api/login', () => {
         supertest(server.server).post('/api/login').send(payload)
 
     it('should return 200 and a token for valid credentials', async () => {
-        const { status, body } = await postLogin({ email: testEmail, password: testPassword })
+        const response = await postLogin({ email: testEmail, password: testPassword })
 
-        expect(status).toBe(200)
+        expect(response.status).toBe(200)
 
-        expect(body).toHaveProperty('token')
-        expect(typeof body.token).toBe('string')
+        expect(response.body).toHaveProperty('accessToken')
+        expect(typeof response.body.accessToken).toBe('string')
+
+        const cookies = ([] as string[]).concat(response.headers['set-cookie'] || [])
+
+        expect(cookies).toBeDefined()
+        expect(cookies.some((c: string) => c.startsWith('refreshToken='))).toBe(true)
     })
 
     it('should return 401 for invalid credentials', async () => {

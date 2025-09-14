@@ -41,14 +41,16 @@ afterAll(async () => {
 
 describe('POST /api/register', () => {
     it('should success and return user data and token', async () => {
-        const { status, body } = await postRegister(userData)
+        const response = await postRegister(userData)
+
+        const { status, body } = response
 
         expect(status).toBe(201)
 
-        expect(body).toHaveProperty('token')
+        expect(body).toHaveProperty('accessToken')
         expect(body).toHaveProperty('user')
 
-        expect(typeof body.token).toBe('string')
+        expect(typeof body.accessToken).toBe('string')
 
         expect(body.user).toMatchObject({
             id: expect.any(Number),
@@ -61,6 +63,11 @@ describe('POST /api/register', () => {
         })
 
         expect(body.user).not.toHaveProperty('password')
+
+        const cookies = ([] as string[]).concat(response.headers['set-cookie'] || [])
+
+        expect(cookies).toBeDefined()
+        expect(cookies.some((c: string) => c.startsWith('refreshToken='))).toBe(true)
     })
 
     it('should return 409 if email already exists', async () => {

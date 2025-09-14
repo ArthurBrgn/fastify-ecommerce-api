@@ -8,11 +8,10 @@ export async function loginHandler(
 ) {
     const userId = await loginUser(request.server.prisma, request.body)
 
-    const token = await reply.jwtSign({
-        id: userId
-    })
+    const accessToken = await reply.jwtSign({ id: userId })
+    const refreshToken = await reply.jwtSign({ id: userId }, { expiresIn: '7d' })
 
-    return reply.send({ token })
+    return reply.setRefreshTokenCookie(refreshToken).send({ accessToken })
 }
 
 export async function registerHandler(
@@ -21,9 +20,8 @@ export async function registerHandler(
 ) {
     const user = await registerUser(request.server.prisma, request.body)
 
-    const token = await reply.jwtSign({
-        id: user.id
-    })
+    const accessToken = await reply.jwtSign({ id: user.id })
+    const refreshToken = await reply.jwtSign({ id: user.id }, { expiresIn: '7d' })
 
-    return reply.status(201).send({ user, token })
+    return reply.code(201).setRefreshTokenCookie(refreshToken).send({ user, accessToken })
 }

@@ -12,11 +12,11 @@ const registerSchema = saveUserSchema.refine((data) => data.password === data.pa
 })
 
 const loginResponseSchema = z.object({
-    token: z.string()
+    accessToken: z.string()
 })
 
 const registerResponseSchema = z.object({
-    token: z.string(),
+    accessToken: z.string(),
     user: userSchema
 })
 

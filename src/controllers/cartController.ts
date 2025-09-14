@@ -16,7 +16,7 @@ export async function addProductToCartHandler(
 
     const cart = await request.getUserCart()
 
-    return reply.status(200).send(cart)
+    return reply.send(cart)
 }
 
 export async function incrementCartItemQuantityHandler(
@@ -31,7 +31,7 @@ export async function incrementCartItemQuantityHandler(
 
     const cart = await request.getUserCart()
 
-    return reply.status(200).send(cart)
+    return reply.send(cart)
 }
 
 export async function decrementCartItemQuantityHandler(
@@ -46,7 +46,7 @@ export async function decrementCartItemQuantityHandler(
 
     const cart = await request.getUserCart()
 
-    return reply.status(200).send(cart)
+    return reply.send(cart)
 }
 
 export async function deleteCartItemHandler(
@@ -57,5 +57,5 @@ export async function deleteCartItemHandler(
 
     const cart = await request.getUserCart()
 
-    return reply.status(200).send(cart)
+    return reply.send(cart)
 }

@@ -6,7 +6,7 @@ export default fp(async (server) => {
     server.setErrorHandler((error, _request, reply) => {
         // Validation errors throwed by zod
         if (error instanceof ZodError) {
-            return reply.status(422).send({
+            return reply.code(422).send({
                 errors: error.issues.map((e) => ({
                     field: e.path.join('.'),
                     message: e.message
@@ -16,7 +16,7 @@ export default fp(async (server) => {
 
         // Validation errors throwed by fastify
         if (error.validation) {
-            return reply.status(422).send({
+            return reply.code(422).send({
                 errors: error.validation.map((e) => ({
                     field: e.instancePath.replace(/^\//, '').replace(/\//g, '.'), // format field path : "field.subfield"
                     message: e.message
@@ -26,13 +26,13 @@ export default fp(async (server) => {
 
         // Custom API errors
         if (error instanceof BaseApiException) {
-            return reply.status(error.statusCode).send({
+            return reply.code(error.statusCode).send({
                 message: error.message
             })
         }
 
         // Default
-        return reply.status(error.statusCode ?? 500).send({
+        return reply.code(error.statusCode ?? 500).send({
             message: error.message
         })
     })

@@ -5,7 +5,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 export async function profileHandler(request: FastifyRequest, reply: FastifyReply) {
     const user = await getUserInfoById(request.server.prisma, request.user.id)
 
-    return reply.status(200).send(user)
+    return reply.send(user)
 }
 
 export async function patchProfileHandler(
@@ -14,5 +14,5 @@ export async function patchProfileHandler(
 ) {
     const user = await patchUserInfo(request.server.prisma, request.user.id, request.body)
 
-    return reply.status(200).send(user)
+    return reply.send(user)
 }
