@@ -8,5 +8,13 @@ export default {
     printWidth: 100,
     tabWidth: 4,
     arrowParens: 'always',
-    plugins: [organizeImports]
+    plugins: [organizeImports],
+    overrides: [
+        {
+            files: ['*.yml', '*.yaml'],
+            options: {
+                tabWidth: 2
+            }
+        }
+    ]
 }
