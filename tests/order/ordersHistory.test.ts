@@ -4,7 +4,7 @@ import { Category, Product, User } from '@prisma/client'
 import { hash } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import supertest from 'supertest'
-import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { resetDatabase } from './../utils/resetDatabase'
 
 let server: FastifyInstance
@@ -71,8 +71,6 @@ describe('GET /api/orders', () => {
             })
         }
     })
-
-    beforeEach(async () => {})
 
     afterAll(async () => {
         await server.close()
