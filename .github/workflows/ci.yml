@@ -9,7 +9,8 @@ on:
 jobs:
   build-test:
     runs-on: ubuntu-latest
-
+    env:
+      DATABASE_URL: "file:./ci-test.sqlite"  # TMP DB
     steps:
       - name: Checkout
         uses: actions/checkout@v4
