@@ -3,8 +3,8 @@ import { ProductOutOfStockException } from '@/exceptions/cart/ProductOutOfStockE
 import { RecordNotFoundException } from '@/exceptions/RecordNotFoundException'
 import { AppPrismaClient } from '@/plugins/prismaPlugin'
 import { OrderResponse } from '@/schemas/order/orderSchema'
+import { formatOrder } from '@/services/order/orderFormatter'
 import roundPrice from '@/utils/roundPrice'
-import { getFormattedOrderDetailsById } from './orderService'
 
 export default async function createOrder(
     prisma: AppPrismaClient,
@@ -52,17 +52,23 @@ export default async function createOrder(
         const createdOrder = await tx.order.create({
             data: {
                 userId,
-                total: rawOrderTotal
+                total: rawOrderTotal,
+                orderItems: {
+                    create: cart.items.map((item) => ({
+                        productId: item.productId,
+                        quantity: item.quantity,
+                        price: roundPrice(item.product.price)
+                    }))
+                }
+            },
+            select: {
+                id: true,
+                total: true,
+                createdAt: true,
+                orderItems: {
+                    select: { productId: true, quantity: true, price: true }
+                }
             }
-        })
-
-        await tx.orderItem.createMany({
-            data: cart.items.map((item) => ({
-                orderId: createdOrder.id,
-                productId: item.productId,
-                quantity: item.quantity,
-                price: roundPrice(item.product.price)
-            }))
         })
 
         // Decrement products stock
@@ -78,5 +84,5 @@ export default async function createOrder(
         return createdOrder
     })
 
-    return getFormattedOrderDetailsById(prisma, order.id)
+    return formatOrder(order)
 }

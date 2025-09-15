@@ -16,5 +16,11 @@ export default defineConfig([
         }
     },
     tseslint.configs.strict,
-    tseslint.configs.stylistic
+    tseslint.configs.stylistic,
+    {
+        rules: {
+            // Allow both `type` and `interface` declarations
+            '@typescript-eslint/consistent-type-definitions': 'off'
+        }
+    }
 ])

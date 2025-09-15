@@ -2,13 +2,12 @@ import { RecordNotFoundException } from '@/exceptions/RecordNotFoundException'
 import { AppPrismaClient } from '@/plugins/prismaPlugin'
 import { PaginationRequest } from '@/schemas/common/paginationSchema'
 import { OrderResponse } from '@/schemas/order/orderSchema'
-import roundPrice from '@/utils/roundPrice'
+import { formatOrder, formatOrders } from '@/services/order/orderFormatter'
 
-export async function getFormattedOrderDetailsById(
+export async function getOrderDetails(
     prisma: AppPrismaClient,
     orderId: number
 ): Promise<OrderResponse> {
-    // Get order with items
     const order = await prisma.order.findUnique({
         where: { id: orderId },
         select: {
@@ -29,17 +28,7 @@ export async function getFormattedOrderDetailsById(
         throw new RecordNotFoundException('Order not found')
     }
 
-    return {
-        id: order.id,
-        total: order.total,
-        createdAt: order.createdAt,
-        items: order.orderItems.map((item) => ({
-            productId: item.productId,
-            quantity: item.quantity,
-            price: item.price,
-            total: roundPrice(item.price * item.quantity)
-        }))
-    }
+    return formatOrder(order)
 }
 
 export async function getOrdersHistory(
@@ -50,12 +39,31 @@ export async function getOrdersHistory(
     const { page, itemsPerPage } = filters
     const skip = (page - 1) * itemsPerPage
 
-    const orders = await prisma.order.findMany({
-        where: { userId: userId },
-        include: { orderItems: { include: { product: true } } },
-        skip: skip,
-        take: itemsPerPage
-    })
+    const [orders, totalItems] = await Promise.all([
+        prisma.order.findMany({
+            where: { userId: userId },
+            select: {
+                id: true,
+                total: true,
+                createdAt: true,
+                orderItems: {
+                    select: { productId: true, quantity: true, price: true }
+                }
+            },
+            orderBy: { createdAt: 'desc' },
+            skip: skip,
+            take: itemsPerPage
+        }),
+        prisma.order.count({ where: { userId: userId } })
+    ])
 
-    return orders
+    return {
+        data: formatOrders(orders),
+        meta: {
+            page,
+            itemsPerPage,
+            total: totalItems,
+            totalPages: Math.ceil(totalItems / itemsPerPage)
+        }
+    }
 }
