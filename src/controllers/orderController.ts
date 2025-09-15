@@ -5,10 +5,10 @@ import { getOrderDetails, getOrdersHistory } from '@/services/order/orderService
 import { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function getOrdersHistoryHandler(
-    request: FastifyRequest<{ Params: PaginationRequest }>,
+    request: FastifyRequest<{ Querystring: PaginationRequest }>,
     reply: FastifyReply
 ) {
-    const order = await getOrdersHistory(request.server.prisma, request.user.id, request.params)
+    const order = await getOrdersHistory(request.server.prisma, request.user.id, request.query)
 
     return reply.send(order)
 }
@@ -27,4 +27,3 @@ export async function createOrderHandler(request: FastifyRequest, reply: Fastify
 
     return reply.code(201).send(order)
 }
-

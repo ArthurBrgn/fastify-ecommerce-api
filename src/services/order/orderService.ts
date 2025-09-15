@@ -36,7 +36,9 @@ export async function getOrdersHistory(
     userId: number,
     filters: PaginationRequest
 ) {
-    const { page, itemsPerPage } = filters
+    const page = filters.page
+    const itemsPerPage = filters.itemsPerPage
+
     const skip = (page - 1) * itemsPerPage
 
     const [orders, totalItems] = await Promise.all([

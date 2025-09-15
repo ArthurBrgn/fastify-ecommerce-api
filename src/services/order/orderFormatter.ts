@@ -8,8 +8,7 @@ export type OrderWithItemsLite = {
     orderItems: {
         productId: number
         quantity: number
-        price: number,
-        total: number
+        price: number
     }[]
 }
 

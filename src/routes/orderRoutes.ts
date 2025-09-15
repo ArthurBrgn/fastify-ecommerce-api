@@ -8,13 +8,13 @@ import { orderResponseSchema, ViewOrderRequest, viewOrderSchema } from '@/schema
 import { FastifyInstance } from 'fastify'
 
 export default async function orderRoutes(server: FastifyInstance) {
-    server.get<{ Params: PaginationRequest }>(
+    server.get<{ Querystring: PaginationRequest }>(
         '/',
         {
             onRequest: [server.authenticate],
             schema: {
                 tags: ['Order'],
-                params: paginationRequestSchema
+                querystring: paginationRequestSchema
             }
         },
         getOrdersHistoryHandler
