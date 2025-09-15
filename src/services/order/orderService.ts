@@ -1,9 +1,10 @@
 import { RecordNotFoundException } from '@/exceptions/RecordNotFoundException'
 import { AppPrismaClient } from '@/plugins/prismaPlugin'
+import { PaginationRequest } from '@/schemas/common/paginationSchema'
 import { OrderResponse } from '@/schemas/order/orderSchema'
 import roundPrice from '@/utils/roundPrice'
 
-export default async function getFormattedOrderDetailsById(
+export async function getFormattedOrderDetailsById(
     prisma: AppPrismaClient,
     orderId: number
 ): Promise<OrderResponse> {
@@ -39,4 +40,22 @@ export default async function getFormattedOrderDetailsById(
             total: roundPrice(item.price * item.quantity)
         }))
     }
+}
+
+export async function getOrdersHistory(
+    prisma: AppPrismaClient,
+    userId: number,
+    filters: PaginationRequest
+) {
+    const { page, itemsPerPage } = filters
+    const skip = (page - 1) * itemsPerPage
+
+    const orders = await prisma.order.findMany({
+        where: { userId: userId },
+        include: { orderItems: { include: { product: true } } },
+        skip: skip,
+        take: itemsPerPage
+    })
+
+    return orders
 }

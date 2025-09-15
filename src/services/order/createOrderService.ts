@@ -4,7 +4,7 @@ import { RecordNotFoundException } from '@/exceptions/RecordNotFoundException'
 import { AppPrismaClient } from '@/plugins/prismaPlugin'
 import { OrderResponse } from '@/schemas/order/orderSchema'
 import roundPrice from '@/utils/roundPrice'
-import getFormattedOrderDetailsById from './orderService'
+import { getFormattedOrderDetailsById } from './orderService'
 
 export default async function createOrder(
     prisma: AppPrismaClient,

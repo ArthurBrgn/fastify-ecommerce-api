@@ -12,4 +12,6 @@ const paginationMetaSchema = z.object({
     totalPages: z.int().meta({ example: 5 })
 })
 
-export { paginationMetaSchema, paginationRequestSchema }
+type PaginationRequest = z.infer<typeof paginationRequestSchema>
+
+export { paginationMetaSchema, PaginationRequest, paginationRequestSchema }
