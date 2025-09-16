@@ -1,9 +1,14 @@
-import { searchProductsHandler, viewProductHandler } from '@/controllers/productController'
+import {
+    getTopProductsHandler,
+    searchProductsHandler,
+    viewProductHandler
+} from '@/controllers/productController'
 import {
     SearchProductsRequest,
     searchProductsResponseSchema,
     searchProductsSchema
 } from '@/schemas/product/searchProductsSchema'
+import { topProductsResponseSchema } from '@/schemas/product/topProductsSchema'
 import {
     ViewProductRequest,
     viewProductResponseSchema,
@@ -23,6 +28,18 @@ export default function productRoutes(server: FastifyInstance) {
             }
         },
         searchProductsHandler
+    )
+
+    server.get(
+        '/top',
+        {
+            onRequest: [server.authenticate],
+            schema: {
+                tags: ['Product'],
+                response: { 200: topProductsResponseSchema }
+            }
+        },
+        getTopProductsHandler
     )
 
     server.get<{ Params: ViewProductRequest }>(
