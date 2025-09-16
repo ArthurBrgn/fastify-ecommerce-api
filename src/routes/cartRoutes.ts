@@ -75,8 +75,7 @@ export default function cartRoutes(server: FastifyInstance) {
             onRequest: [server.authenticate],
             schema: {
                 tags: ['Cart'],
-                params: identifierParamSchema,
-                response: { 204: { type: 'null' } }
+                params: identifierParamSchema
             }
         },
         deleteCartHandler

@@ -1,7 +1,8 @@
 import z from 'zod'
+import { identifierSchema } from '../common/identifierSchema'
 
 const cartItemsParamsSchema = z.object({
-    productId: z.coerce.number().int().positive().meta({ example: 1 })
+    productId: z.coerce.number().pipe(identifierSchema)
 })
 
 type CartItemParamsSchema = z.infer<typeof cartItemsParamsSchema>
