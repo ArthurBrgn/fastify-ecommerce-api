@@ -1,6 +1,7 @@
 import {
     addProductToCartHandler,
     decrementCartItemQuantityHandler,
+    deleteCartHandler,
     deleteCartItemHandler,
     incrementCartItemQuantityHandler
 } from '@/controllers/cartController'
@@ -10,6 +11,7 @@ import {
 } from '@/schemas/cart/addProductToCartSchema'
 import { CartItemParamsSchema, cartItemsParamsSchema } from '@/schemas/cart/cartItemParamsSchema'
 import { cartResponseSchema } from '@/schemas/cart/cartResponseSchema'
+import { identifierParamSchema, IdentifierParamsSchema } from '@/schemas/common/identifierSchema'
 import { FastifyInstance } from 'fastify'
 
 export default function cartRoutes(server: FastifyInstance) {
@@ -65,5 +67,18 @@ export default function cartRoutes(server: FastifyInstance) {
             }
         },
         deleteCartItemHandler
+    )
+
+    server.delete<{ Params: IdentifierParamsSchema }>(
+        '/:id',
+        {
+            onRequest: [server.authenticate],
+            schema: {
+                tags: ['Cart'],
+                params: identifierParamSchema,
+                response: { 204: { type: 'null' } }
+            }
+        },
+        deleteCartHandler
     )
 }

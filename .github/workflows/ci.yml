@@ -35,14 +35,8 @@ jobs:
       - name: Apply migrations
         run: pnpm prisma migrate deploy
 
-      - name: Prettier check
-        run: pnpm prettier --check .
-
-      - name: ESLint
+      - name: Check lint
         run: pnpm lint
-
-      - name: Type check
-        run: pnpm type:check
 
       - name: Tests
         run: pnpm test

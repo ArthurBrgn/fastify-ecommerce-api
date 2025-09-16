@@ -6,4 +6,6 @@ const identifierParamSchema = z.object({
     id: z.coerce.number().int().positive().meta({ example: 1 })
 })
 
-export { identifierParamSchema, identifierSchema }
+type IdentifierParamsSchema = z.infer<typeof identifierParamSchema>
+
+export { IdentifierParamsSchema, identifierParamSchema, identifierSchema }
