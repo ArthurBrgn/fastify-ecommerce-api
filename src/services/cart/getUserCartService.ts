@@ -1,5 +1,6 @@
 import { AppPrismaClient } from '@/plugins/prismaPlugin'
 import { CartResponse } from '@/schemas/cart/cartResponseSchema'
+import applyCoupon from '@/utils/applyCoupon'
 import roundPrice from '@/utils/roundPrice'
 
 export async function getCartForUser(
@@ -17,11 +18,18 @@ export async function getCartForUser(
                         select: { id: true, name: true, price: true, slug: true }
                     }
                 }
+            },
+            coupon: {
+                select: {
+                    code: true,
+                    discountType: true,
+                    discountValue: true
+                }
             }
         }
     })
 
-    if (!cart) {
+    if (!cart || cart.items.length === 0) {
         return { items: [], total: 0 }
     }
 
@@ -32,7 +40,9 @@ export async function getCartForUser(
         }
     })
 
-    const total = roundPrice(items.reduce((sum, item) => sum + item.total, 0))
+    let total = roundPrice(items.reduce((sum, item) => sum + item.total, 0))
+
+    total = applyCoupon(total)
 
     return { items, total }
 }
