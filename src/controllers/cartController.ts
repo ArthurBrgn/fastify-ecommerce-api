@@ -1,6 +1,5 @@
 import { AddProductToCartRequest } from '@/schemas/cart/addProductToCartSchema'
 import { CartItemParamsSchema } from '@/schemas/cart/cartItemParamsSchema'
-import { IdentifierParamsSchema } from '@/schemas/common/identifierSchema'
 import { addProductToCart } from '@/services/cart/addProductToCartService'
 import { deleteCartItem } from '@/services/cart/deleteCartItemService'
 import { deleteCart } from '@/services/cart/deleteCartService'
@@ -62,11 +61,8 @@ export async function deleteCartItemHandler(
     return reply.send(cart)
 }
 
-export async function deleteCartHandler(
-    request: FastifyRequest<{ Params: IdentifierParamsSchema }>,
-    reply: FastifyReply
-) {
-    await deleteCart(request.server.prisma, request.params.id, request.user.id)
+export async function deleteCartHandler(request: FastifyRequest, reply: FastifyReply) {
+    await deleteCart(request.server.prisma, request.user.id)
 
     return reply.status(204).send()
 }

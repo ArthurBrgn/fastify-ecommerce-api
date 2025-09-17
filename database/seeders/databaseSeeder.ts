@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import couponSeeder from './couponSeeder'
 import productSeeder from './productSeeder'
 import userSeeder from './userSeeder'
 
@@ -8,6 +9,8 @@ async function main() {
     await userSeeder(prisma, 10)
 
     await productSeeder(prisma, { categories: 5, products: 30 })
+
+    await couponSeeder(prisma)
 }
 
 main()

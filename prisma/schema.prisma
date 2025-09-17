@@ -1,3 +1,8 @@
+enum DiscountType {
+  PERCENTAGE
+  FIXED
+}
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -52,6 +57,8 @@ model Order {
   userId     Int
   user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   orderItems OrderItem[]
+  couponId   Int?
+  coupon     Coupon?     @relation(fields: [couponId], references: [id])
   total      Float
   createdAt  DateTime    @default(now())
 
@@ -77,6 +84,8 @@ model Cart {
   user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int        @unique
   items     CartItem[]
+  couponId  Int?
+  coupon    Coupon?    @relation(fields: [couponId], references: [id])
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 }
@@ -92,4 +101,16 @@ model CartItem {
   @@unique([cartId, productId])
   @@index([cartId])
   @@index([productId])
+}
+
+model Coupon {
+  id            Int          @id @default(autoincrement())
+  code          String       @unique
+  discountType  DiscountType
+  discountValue Float
+  expiresAt     DateTime
+  carts         Cart[]
+  orders        Order[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 }

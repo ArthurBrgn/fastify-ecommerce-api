@@ -13,9 +13,9 @@ let category: Category
 let product: Product
 let cartId: number
 
-const deleteCart = (id: number, authToken?: string) =>
+const deleteCart = (authToken?: string) =>
     supertest(server.server)
-        .delete(`/api/cart/${id}`)
+        .delete('/api/cart/')
         .set('Authorization', authToken ? `Bearer ${authToken}` : '')
 
 beforeAll(async () => {
@@ -75,7 +75,7 @@ afterAll(async () => {
 
 describe('DELETE /api/cart/:id', () => {
     it('should delete the entire cart and return 204', async () => {
-        const { status, body } = await deleteCart(cartId, token)
+        const { status, body } = await deleteCart(token)
 
         expect(status).toBe(204)
         expect(body).toEqual({})
@@ -87,22 +87,15 @@ describe('DELETE /api/cart/:id', () => {
         expect(items).toHaveLength(0)
     })
 
-    it('should return 404 if cart does not exist', async () => {
-        const { status, body } = await deleteCart(999999, token)
-
-        expect(status).toBe(404)
-        expect(body).toHaveProperty('message', 'Cart not found')
-    })
-
     it('should return 401 if token is missing', async () => {
-        const { status, body } = await deleteCart(cartId)
+        const { status, body } = await deleteCart()
 
         expect(status).toBe(401)
         expect(body).toHaveProperty('message')
     })
 
     it('should return 401 if token is invalid', async () => {
-        const { status, body } = await deleteCart(cartId, 'Invalid token')
+        const { status, body } = await deleteCart('Invalid token')
 
         expect(status).toBe(401)
         expect(body).toHaveProperty('message')
