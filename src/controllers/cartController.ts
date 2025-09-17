@@ -1,5 +1,7 @@
+import { AddCouponToCartRequest } from '@/schemas/cart/addCouponToCartSchema'
 import { AddProductToCartRequest } from '@/schemas/cart/addProductToCartSchema'
 import { CartItemParamsSchema } from '@/schemas/cart/cartItemParamsSchema'
+import addCouponToCart from '@/services/cart/addCouponToCartService'
 import { addProductToCart } from '@/services/cart/addProductToCartService'
 import { deleteCartItem } from '@/services/cart/deleteCartItemService'
 import { deleteCart } from '@/services/cart/deleteCartService'
@@ -65,4 +67,15 @@ export async function deleteCartHandler(request: FastifyRequest, reply: FastifyR
     await deleteCart(request.server.prisma, request.user.id)
 
     return reply.status(204).send()
+}
+
+export async function addCouponToCartHandler(
+    request: FastifyRequest<{ Body: AddCouponToCartRequest }>,
+    reply: FastifyReply
+) {
+    await addCouponToCart(request.server.prisma, request.body.couponCode, request.user.id)
+
+    const cart = await request.getUserCart()
+
+    return reply.send(cart)
 }

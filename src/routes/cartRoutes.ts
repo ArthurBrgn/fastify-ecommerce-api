@@ -1,17 +1,18 @@
 import {
+    addCouponToCartHandler,
     addProductToCartHandler,
     decrementCartItemQuantityHandler,
     deleteCartHandler,
     deleteCartItemHandler,
     incrementCartItemQuantityHandler
 } from '@/controllers/cartController'
+import { AddCouponToCartRequest, addCouponToCartSchema } from '@/schemas/cart/addCouponToCartSchema'
 import {
     AddProductToCartRequest,
     addProductToCartSchema
 } from '@/schemas/cart/addProductToCartSchema'
 import { CartItemParamsSchema, cartItemsParamsSchema } from '@/schemas/cart/cartItemParamsSchema'
 import { cartResponseSchema } from '@/schemas/cart/cartResponseSchema'
-import { identifierParamSchema } from '@/schemas/common/identifierSchema'
 import { FastifyInstance } from 'fastify'
 
 export default function cartRoutes(server: FastifyInstance) {
@@ -78,5 +79,20 @@ export default function cartRoutes(server: FastifyInstance) {
             }
         },
         deleteCartHandler
+    )
+
+    server.post<{ Body: AddCouponToCartRequest }>(
+        '/coupon',
+        {
+            onRequest: [server.authenticate],
+            schema: {
+                tags: ['Cart'],
+                body: addCouponToCartSchema,
+                response: {
+                    200: cartResponseSchema
+                }
+            }
+        },
+        addCouponToCartHandler
     )
 }
