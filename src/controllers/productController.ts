@@ -14,7 +14,6 @@ export async function searchProductsHandler(
 }
 
 export async function getTopProductsHandler(request: FastifyRequest, reply: FastifyReply) {
-    // Only return top products for the authenticated user's own orders
     const userId = request.user.id
     const products = await getTopProducts(request.server.prisma, userId)
 

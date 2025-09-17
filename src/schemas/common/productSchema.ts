@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { categorySchema } from './categorySchema'
 import { identifierSchema } from './identifierSchema'
+import { paginationMetaSchema } from './paginationSchema'
 
 const baseProductSchema = z.object({
     id: identifierSchema,
@@ -16,7 +17,21 @@ const productWithCategorySchema = baseProductSchema.extend({
     category: categorySchema
 })
 
+const paginatedProductsResponseSchema = z.object({
+    meta: paginationMetaSchema,
+    data: z.array(baseProductSchema.extend({ categoryId: identifierSchema }))
+})
+
 type Product = z.infer<typeof baseProductSchema>
 type ProductWithCategory = z.infer<typeof productWithCategorySchema>
 
-export { baseProductSchema, Product, ProductWithCategory, productWithCategorySchema }
+type PaginatedProductsResponse = z.infer<typeof paginatedProductsResponseSchema>
+
+export {
+    baseProductSchema,
+    PaginatedProductsResponse,
+    paginatedProductsResponseSchema,
+    Product,
+    ProductWithCategory,
+    productWithCategorySchema
+}

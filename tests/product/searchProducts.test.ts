@@ -1,8 +1,8 @@
 import { buildApp } from '@/app'
+import { PaginatedProductsResponse } from '@/schemas/common/productSchema'
 import {
     searchProductsSchema,
-    type SearchProductsRequest,
-    type SearchProductsResponse
+    type SearchProductsRequest
 } from '@/schemas/product/searchProductsSchema'
 import { hash } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
@@ -74,7 +74,7 @@ describe('GET /api/products', () => {
     it('should return paginated products successfully with default params', async () => {
         const response = await searchProducts({}, token)
 
-        const body: SearchProductsResponse = response.body
+        const body: PaginatedProductsResponse = response.body
 
         expect(response.status).toBe(200)
 
@@ -119,7 +119,7 @@ describe('GET /api/products', () => {
 
     it('should return correct products for page 2', async () => {
         const response = await searchProducts({ page: 2 }, token)
-        const body: SearchProductsResponse = response.body
+        const body: PaginatedProductsResponse = response.body
 
         expect(response.status).toBe(200)
         expect(body.meta.page).toBe(2)
@@ -128,7 +128,7 @@ describe('GET /api/products', () => {
 
     it('should filter products by search term', async () => {
         const response = await searchProducts({ search: 'Product 1' }, token)
-        const body: SearchProductsResponse = response.body
+        const body: PaginatedProductsResponse = response.body
 
         expect(response.status).toBe(200)
         expect(
@@ -142,7 +142,7 @@ describe('GET /api/products', () => {
 
     it('should filter products by inStock', async () => {
         const response = await searchProducts({ inStock: true }, token)
-        const body: SearchProductsResponse = response.body
+        const body: PaginatedProductsResponse = response.body
 
         expect(response.status).toBe(200)
         expect(body.data.every((p) => p.stock > 0)).toBe(true)
@@ -151,7 +151,7 @@ describe('GET /api/products', () => {
     it('should filter by minPrice', async () => {
         const minPrice = 50
         const response = await searchProducts({ minPrice }, token)
-        const body: SearchProductsResponse = response.body
+        const body: PaginatedProductsResponse = response.body
 
         expect(response.status).toBe(200)
         expect(body.data.every((p) => p.price >= minPrice)).toBe(true)
@@ -160,7 +160,7 @@ describe('GET /api/products', () => {
     it('should filter by maxPrice', async () => {
         const maxPrice = 50
         const response = await searchProducts({ maxPrice }, token)
-        const body: SearchProductsResponse = response.body
+        const body: PaginatedProductsResponse = response.body
 
         expect(response.status).toBe(200)
         expect(body.data.every((p) => p.price <= maxPrice)).toBe(true)
@@ -170,7 +170,7 @@ describe('GET /api/products', () => {
         const minPrice = 20
         const maxPrice = 40
         const response = await searchProducts({ minPrice, maxPrice }, token)
-        const body: SearchProductsResponse = response.body
+        const body: PaginatedProductsResponse = response.body
 
         expect(response.status).toBe(200)
         expect(body.data.every((p) => p.price >= minPrice && p.price <= maxPrice)).toBe(true)

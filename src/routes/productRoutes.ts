@@ -3,11 +3,8 @@ import {
     searchProductsHandler,
     viewProductHandler
 } from '@/controllers/productController'
-import {
-    SearchProductsRequest,
-    searchProductsResponseSchema,
-    searchProductsSchema
-} from '@/schemas/product/searchProductsSchema'
+import { paginatedProductsResponseSchema } from '@/schemas/common/productSchema'
+import { SearchProductsRequest, searchProductsSchema } from '@/schemas/product/searchProductsSchema'
 import { topProductsResponseSchema } from '@/schemas/product/topProductsSchema'
 import {
     ViewProductRequest,
@@ -24,7 +21,7 @@ export default function productRoutes(server: FastifyInstance) {
             schema: {
                 tags: ['Product'],
                 querystring: searchProductsSchema,
-                response: { 200: searchProductsResponseSchema }
+                response: { 200: paginatedProductsResponseSchema }
             }
         },
         searchProductsHandler
