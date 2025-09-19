@@ -42,7 +42,9 @@ export async function getCartForUser(
 
     let total = roundPrice(items.reduce((sum, item) => sum + item.total, 0))
 
-    total = applyCoupon(total)
+    if (cart.coupon) {
+        total = applyCoupon(total, cart.coupon)
+    }
 
     return { items, total }
 }

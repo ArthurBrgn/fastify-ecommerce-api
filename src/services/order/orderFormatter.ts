@@ -1,10 +1,16 @@
 import { OrderResponse } from '@/schemas/order/orderSchema'
 import roundPrice from '@/utils/roundPrice'
+import { DiscountType } from '@prisma/client'
 
 export type OrderWithItemsLite = {
     id: number
     total: number
     createdAt: Date
+    coupon: {
+        code: string
+        discountType: DiscountType
+        discountValue: number
+    } | null
     orderItems: {
         productId: number
         quantity: number
@@ -22,7 +28,14 @@ export function formatOrder(order: OrderWithItemsLite): OrderResponse {
             quantity: item.quantity,
             price: item.price,
             total: roundPrice(item.price * item.quantity)
-        }))
+        })),
+        coupon: order.coupon
+            ? {
+                  code: order.coupon.code,
+                  discountType: order.coupon.discountType,
+                  discountValue: order.coupon.discountValue
+              }
+            : null
     }
 }
 

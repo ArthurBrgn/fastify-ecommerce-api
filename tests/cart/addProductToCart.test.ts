@@ -81,7 +81,7 @@ describe('POST /api/cart/items', () => {
         const { status, body } = await addToCart(product.id, 1, token)
 
         expect(status).toBe(200)
-        expect(body.items[0].quantity).toBe(3) // 2 + 1
+        expect(body.items[0].quantity).toBe(3)
         expect(body.total).toBe(30)
     })
 

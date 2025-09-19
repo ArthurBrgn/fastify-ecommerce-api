@@ -1,3 +1,4 @@
+import { DiscountType } from '@prisma/client'
 import z from 'zod'
 import { identifierParamSchema, identifierSchema } from '../common/identifierSchema'
 
@@ -14,7 +15,14 @@ const orderResponseSchema = z.object({
             price: z.number(),
             total: z.number()
         })
-    )
+    ),
+    coupon: z
+        .object({
+            code: z.string(),
+            discountType: z.enum(DiscountType),
+            discountValue: z.number().positive()
+        })
+        .nullable()
 })
 
 type ViewOrderRequest = z.infer<typeof viewOrderSchema>

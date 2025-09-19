@@ -20,6 +20,13 @@ export async function getOrderDetails(
                     quantity: true,
                     price: true
                 }
+            },
+            coupon: {
+                select: {
+                    code: true,
+                    discountType: true,
+                    discountValue: true
+                }
             }
         }
     })
@@ -50,6 +57,13 @@ export async function getOrdersHistory(
                 createdAt: true,
                 orderItems: {
                     select: { productId: true, quantity: true, price: true }
+                },
+                coupon: {
+                    select: {
+                        code: true,
+                        discountType: true,
+                        discountValue: true
+                    }
                 }
             },
             orderBy: { createdAt: 'desc' },

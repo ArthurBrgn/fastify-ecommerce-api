@@ -4,6 +4,7 @@ import { RecordNotFoundException } from '@/exceptions/RecordNotFoundException'
 import { AppPrismaClient } from '@/plugins/prismaPlugin'
 import { OrderResponse } from '@/schemas/order/orderSchema'
 import { formatOrder } from '@/services/order/orderFormatter'
+import applyCoupon from '@/utils/applyCoupon'
 import roundPrice from '@/utils/roundPrice'
 
 export default async function createOrder(
@@ -14,6 +15,13 @@ export default async function createOrder(
         where: { userId },
         select: {
             id: true,
+            coupon: {
+                select: {
+                    id: true,
+                    discountType: true,
+                    discountValue: true
+                }
+            },
             items: {
                 select: {
                     id: true,
@@ -43,16 +51,24 @@ export default async function createOrder(
     }
 
     // Total order price
-    const rawOrderTotal = cart.items.reduce(
+    let orderTotal = cart.items.reduce(
         (sum, item) => sum + roundPrice(item.product.price * item.quantity),
         0
     )
+
+    if (cart.coupon) {
+        orderTotal = applyCoupon(orderTotal, {
+            discountType: cart.coupon.discountType,
+            discountValue: cart.coupon.discountValue
+        })
+    }
 
     const order = await prisma.$transaction(async (tx) => {
         const createdOrder = await tx.order.create({
             data: {
                 userId,
-                total: rawOrderTotal,
+                couponId: cart.coupon?.id,
+                total: orderTotal,
                 orderItems: {
                     create: cart.items.map((item) => ({
                         productId: item.productId,
@@ -65,6 +81,13 @@ export default async function createOrder(
                 id: true,
                 total: true,
                 createdAt: true,
+                coupon: {
+                    select: {
+                        code: true,
+                        discountType: true,
+                        discountValue: true
+                    }
+                },
                 orderItems: {
                     select: { productId: true, quantity: true, price: true }
                 }
