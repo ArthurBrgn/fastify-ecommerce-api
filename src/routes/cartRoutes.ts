@@ -4,6 +4,7 @@ import {
     decrementCartItemQuantityHandler,
     deleteCartHandler,
     deleteCartItemHandler,
+    deleteCouponFromCartHandler,
     incrementCartItemQuantityHandler
 } from '@/controllers/cartController'
 import { AddCouponToCartRequest, addCouponToCartSchema } from '@/schemas/cart/addCouponToCartSchema'
@@ -94,5 +95,16 @@ export default function cartRoutes(server: FastifyInstance) {
             }
         },
         addCouponToCartHandler
+    )
+
+    server.delete(
+        '/coupon',
+        {
+            onRequest: [server.authenticate],
+            schema: {
+                tags: ['Cart']
+            }
+        },
+        deleteCouponFromCartHandler
     )
 }

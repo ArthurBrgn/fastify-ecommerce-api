@@ -5,6 +5,7 @@ import addCouponToCart from '@/services/cart/addCouponToCartService'
 import { addProductToCart } from '@/services/cart/addProductToCartService'
 import { deleteCartItem } from '@/services/cart/deleteCartItemService'
 import { deleteCart } from '@/services/cart/deleteCartService'
+import { deleteCouponFromCart } from '@/services/cart/deleteCouponFromCartService'
 import {
     decrementCartItemQuantity,
     incrementCartItemQuantity
@@ -78,4 +79,10 @@ export async function addCouponToCartHandler(
     const cart = await request.getUserCart()
 
     return reply.send(cart)
+}
+
+export async function deleteCouponFromCartHandler(request: FastifyRequest, reply: FastifyReply) {
+    await deleteCouponFromCart(request.server.prisma, request.user.id)
+
+    return reply.status(204).send()
 }
