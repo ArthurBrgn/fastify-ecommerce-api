@@ -1,8 +1,8 @@
 import { RecordNotFoundException } from '@/exceptions/RecordNotFoundException'
 import { AppPrismaClient } from '@/plugins/prismaPlugin'
 
-export async function getTopProducts(prisma: AppPrismaClient, userId: number) {
-    const topProducts = await prisma.orderItem.groupBy({
+export async function getPopularProducts(prisma: AppPrismaClient, userId: number) {
+    const popularProducts = await prisma.orderItem.groupBy({
         by: ['productId'],
         _sum: { quantity: true },
         where: { order: { userId } },
@@ -10,11 +10,11 @@ export async function getTopProducts(prisma: AppPrismaClient, userId: number) {
         take: 10
     })
 
-    if (topProducts.length === 0) {
+    if (popularProducts.length === 0) {
         return []
     }
 
-    const productIds = topProducts.map((topProduct) => topProduct.productId)
+    const productIds = popularProducts.map((p) => p.productId)
 
     const productsWithCategory = await prisma.product.findMany({
         where: { id: { in: productIds } },

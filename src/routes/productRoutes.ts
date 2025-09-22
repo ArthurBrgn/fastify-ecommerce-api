@@ -1,11 +1,11 @@
 import {
-    getTopProductsHandler,
+    getPopularProductsHandler,
     searchProductsHandler,
     viewProductHandler
 } from '@/controllers/productController'
 import { paginatedProductsResponseSchema } from '@/schemas/common/productSchema'
+import { popularProductsResponseSchema } from '@/schemas/product/popularProductsSchema'
 import { SearchProductsRequest, searchProductsSchema } from '@/schemas/product/searchProductsSchema'
-import { topProductsResponseSchema } from '@/schemas/product/topProductsSchema'
 import {
     ViewProductRequest,
     viewProductResponseSchema,
@@ -28,15 +28,15 @@ export default function productRoutes(server: FastifyInstance) {
     )
 
     server.get(
-        '/top',
+        '/popular',
         {
             onRequest: [server.authenticate],
             schema: {
                 tags: ['Product'],
-                response: { 200: topProductsResponseSchema }
+                response: { 200: popularProductsResponseSchema }
             }
         },
-        getTopProductsHandler
+        getPopularProductsHandler
     )
 
     server.get<{ Params: ViewProductRequest }>(

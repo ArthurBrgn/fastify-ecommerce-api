@@ -1,6 +1,6 @@
 import { SearchProductsRequest } from '@/schemas/product/searchProductsSchema'
 import { ViewProductRequest } from '@/schemas/product/viewProductSchema'
-import { getProductDetailsById, getTopProducts } from '@/services/product/productService'
+import { getPopularProducts, getProductDetailsById } from '@/services/product/productService'
 import searchProducts from '@/services/product/searchProductsService'
 import { FastifyReply, FastifyRequest } from 'fastify'
 
@@ -13,9 +13,9 @@ export async function searchProductsHandler(
     return reply.send(paginatedProducts)
 }
 
-export async function getTopProductsHandler(request: FastifyRequest, reply: FastifyReply) {
+export async function getPopularProductsHandler(request: FastifyRequest, reply: FastifyReply) {
     const userId = request.user.id
-    const products = await getTopProducts(request.server.prisma, userId)
+    const products = await getPopularProducts(request.server.prisma, userId)
 
     return reply.send(products)
 }
