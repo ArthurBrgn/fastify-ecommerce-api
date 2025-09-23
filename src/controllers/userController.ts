@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { UserProfilePatchRequest } from './../schemas/user/profileSchema'
-import { getUserInfoById, patchUserInfo } from './../services/userService'
+import { UserProfilePatchRequest } from './../schemas/user/profileSchema.js'
+import { getUserInfoById, patchUserInfo } from './../services/userService.js'
 
 export async function profileHandler(request: FastifyRequest, reply: FastifyReply) {
     const user = await getUserInfoById(request.server.prisma, request.user.id)

@@ -3,18 +3,18 @@ import {
     getPopularProductsHandler,
     searchProductsHandler,
     viewProductHandler
-} from './../controllers/productController'
-import { paginatedProductsResponseSchema } from './../schemas/common/productSchema'
-import { popularProductsResponseSchema } from './../schemas/product/popularProductsSchema'
+} from './../controllers/productController.js'
+import { paginatedProductsResponseSchema } from './../schemas/common/productSchema.js'
+import { popularProductsResponseSchema } from './../schemas/product/popularProductsSchema.js'
 import {
     SearchProductsRequest,
     searchProductsSchema
-} from './../schemas/product/searchProductsSchema'
+} from './../schemas/product/searchProductsSchema.js'
 import {
     ViewProductRequest,
     viewProductResponseSchema,
     viewProductSchema
-} from './../schemas/product/viewProductSchema'
+} from './../schemas/product/viewProductSchema.js'
 
 export default function productRoutes(server: FastifyInstance) {
     server.get<{ Querystring: SearchProductsRequest }>(

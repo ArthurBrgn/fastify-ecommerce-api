@@ -1,5 +1,5 @@
 import z from 'zod'
-import { identifierSchema } from '../common/identifierSchema'
+import { identifierSchema } from '../common/identifierSchema.js'
 
 const cartResponseSchema = z.object({
     items: z.array(

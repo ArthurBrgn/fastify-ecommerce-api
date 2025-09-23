@@ -1,8 +1,8 @@
 import { Prisma } from '@prisma/client'
 import { hash } from 'bcryptjs'
-import { RecordNotFoundException } from './../exceptions/RecordNotFoundException'
-import { AppPrismaClient } from './../plugins/prismaPlugin'
-import { UserProfilePatchRequest } from './../schemas/user/profileSchema'
+import { RecordNotFoundException } from './../exceptions/RecordNotFoundException.js'
+import { AppPrismaClient } from './../plugins/prismaPlugin.js'
+import { UserProfilePatchRequest } from './../schemas/user/profileSchema.js'
 
 export async function getUserInfoById(prisma: AppPrismaClient, userId: number) {
     const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } }).catch(() => {

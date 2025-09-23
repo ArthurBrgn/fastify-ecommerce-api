@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { saveUserSchema, userSchema } from './../schemas/common/userSchema'
+import { saveUserSchema, userSchema } from './../schemas/common/userSchema.js'
 
 const loginSchema = z.object({
     email: z.email().meta({ example: 'user@example.com' }),

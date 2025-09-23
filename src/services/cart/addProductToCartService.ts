@@ -1,7 +1,7 @@
-import { ProductOutOfStockException } from './../../exceptions/cart/ProductOutOfStockException'
-import { RecordNotFoundException } from './../../exceptions/RecordNotFoundException'
-import { AppPrismaClient } from './../../plugins/prismaPlugin'
-import { AddProductToCartRequest } from './../../schemas/cart/addProductToCartSchema'
+import { ProductOutOfStockException } from './../../exceptions/cart/ProductOutOfStockException.js'
+import { RecordNotFoundException } from './../../exceptions/RecordNotFoundException.js'
+import { AppPrismaClient } from './../../plugins/prismaPlugin.js'
+import { AddProductToCartRequest } from './../../schemas/cart/addProductToCartSchema.js'
 
 export async function addProductToCart(
     prisma: AppPrismaClient,

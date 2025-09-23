@@ -1,8 +1,8 @@
-import { RecordNotFoundException } from './../../exceptions/RecordNotFoundException'
-import { AppPrismaClient } from './../../plugins/prismaPlugin'
-import { PaginationRequest } from './../../schemas/common/paginationSchema'
-import { OrderResponse } from './../../schemas/order/orderSchema'
-import { formatOrder, formatOrders } from './../../services/order/orderFormatter'
+import { RecordNotFoundException } from './../../exceptions/RecordNotFoundException.js'
+import { AppPrismaClient } from './../../plugins/prismaPlugin.js'
+import { PaginationRequest } from './../../schemas/common/paginationSchema.js'
+import { OrderResponse } from './../../schemas/order/orderSchema.js'
+import { formatOrder, formatOrders } from './../../services/order/orderFormatter.js'
 
 export async function getOrderDetails(
     prisma: AppPrismaClient,

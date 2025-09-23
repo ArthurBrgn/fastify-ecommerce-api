@@ -1,6 +1,6 @@
 import fp from 'fastify-plugin'
 import { ZodError } from 'zod'
-import { BaseApiException } from './../exceptions/BaseApiException'
+import { BaseApiException } from './../exceptions/BaseApiException.js'
 
 export default fp(async (server) => {
     server.setErrorHandler((error, _request, reply) => {

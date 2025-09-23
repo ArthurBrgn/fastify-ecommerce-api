@@ -1,5 +1,5 @@
-import { RecordNotFoundException } from './../../exceptions/RecordNotFoundException'
-import { AppPrismaClient } from './../../plugins/prismaPlugin'
+import { RecordNotFoundException } from './../../exceptions/RecordNotFoundException.js'
+import { AppPrismaClient } from './../../plugins/prismaPlugin.js'
 
 export async function deleteCartItem(prisma: AppPrismaClient, productId: number, userId: number) {
     const cart = await prisma.cart.findUnique({

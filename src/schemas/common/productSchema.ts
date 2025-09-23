@@ -1,7 +1,7 @@
 import { z } from 'zod'
-import { categorySchema } from './categorySchema'
-import { identifierSchema } from './identifierSchema'
-import { paginationMetaSchema } from './paginationSchema'
+import { categorySchema } from './categorySchema.js'
+import { identifierSchema } from './identifierSchema.js'
+import { paginationMetaSchema } from './paginationSchema.js'
 
 const baseProductSchema = z.object({
     id: identifierSchema,

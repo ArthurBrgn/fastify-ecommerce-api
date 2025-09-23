@@ -1,4 +1,4 @@
-import { BaseApiException } from './../../exceptions/BaseApiException'
+import { BaseApiException } from './../../exceptions/BaseApiException.js'
 
 export class CouponAlreayPresentException extends BaseApiException {
     constructor(message = 'Cannot add multiple coupons') {

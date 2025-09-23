@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { identifierParamSchema } from '../common/identifierSchema'
-import { productWithCategorySchema } from './../../schemas/common/productSchema'
+import { identifierParamSchema } from '../common/identifierSchema.js'
+import { productWithCategorySchema } from './../../schemas/common/productSchema.js'
 
 const viewProductSchema = identifierParamSchema
 

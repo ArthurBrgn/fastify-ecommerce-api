@@ -1,6 +1,6 @@
 import { DiscountType } from '@prisma/client'
 import z from 'zod'
-import { identifierParamSchema, identifierSchema } from '../common/identifierSchema'
+import { identifierParamSchema, identifierSchema } from '../common/identifierSchema.js'
 
 const viewOrderSchema = identifierParamSchema
 

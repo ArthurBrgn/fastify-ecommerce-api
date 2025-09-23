@@ -1,8 +1,8 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { SearchProductsRequest } from './../schemas/product/searchProductsSchema'
-import { ViewProductRequest } from './../schemas/product/viewProductSchema'
-import { getPopularProducts, getProductDetailsById } from './../services/product/productService'
-import searchProducts from './../services/product/searchProductsService'
+import { SearchProductsRequest } from './../schemas/product/searchProductsSchema.js'
+import { ViewProductRequest } from './../schemas/product/viewProductSchema.js'
+import { getPopularProducts, getProductDetailsById } from './../services/product/productService.js'
+import searchProducts from './../services/product/searchProductsService.js'
 
 export async function searchProductsHandler(
     request: FastifyRequest<{ Querystring: SearchProductsRequest }>,

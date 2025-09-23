@@ -1,9 +1,9 @@
 import { FastifyInstance } from 'fastify'
-import authRoutes from './../routes/authRoutes'
-import productRoutes from './../routes/productRoutes'
-import cartRoutes from './cartRoutes'
-import orderRoutes from './orderRoutes'
-import userRoutes from './userRoutes'
+import authRoutes from './../routes/authRoutes.js'
+import productRoutes from './../routes/productRoutes.js'
+import cartRoutes from './cartRoutes.js'
+import orderRoutes from './orderRoutes.js'
+import userRoutes from './userRoutes.js'
 
 export default function routes(server: FastifyInstance) {
     server.register(authRoutes, { prefix: '/auth' })

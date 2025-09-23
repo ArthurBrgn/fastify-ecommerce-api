@@ -1,7 +1,7 @@
-import { AppPrismaClient } from './../../plugins/prismaPlugin'
-import { CartResponse } from './../../schemas/cart/cartResponseSchema'
-import applyCoupon from './../../utils/applyCoupon'
-import roundPrice from './../../utils/roundPrice'
+import { AppPrismaClient } from './../../plugins/prismaPlugin.js'
+import { CartResponse } from './../../schemas/cart/cartResponseSchema.js'
+import applyCoupon from './../../utils/applyCoupon.js'
+import roundPrice from './../../utils/roundPrice.js'
 
 export async function getCartForUser(
     prisma: AppPrismaClient,

@@ -1,5 +1,5 @@
 import z from 'zod'
-import { identifierSchema } from '../common/identifierSchema'
+import { identifierSchema } from '../common/identifierSchema.js'
 
 const cartItemsParamsSchema = z.object({
     productId: z.coerce.number().pipe(identifierSchema)

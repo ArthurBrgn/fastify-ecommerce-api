@@ -1,10 +1,10 @@
 import { FastifyInstance } from 'fastify'
-import { patchProfileHandler, profileHandler } from './../controllers/userController'
+import { patchProfileHandler, profileHandler } from './../controllers/userController.js'
 import {
     UserProfilePatchRequest,
     userProfilePatchSchema,
     userProfileResponseSchema
-} from './../schemas/user/profileSchema'
+} from './../schemas/user/profileSchema.js'
 
 export default function userRoutes(server: FastifyInstance) {
     server.get(

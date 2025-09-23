@@ -1,5 +1,5 @@
 import z from 'zod'
-import { identifierSchema } from './identifierSchema'
+import { identifierSchema } from './identifierSchema.js'
 
 const userSchema = z.object({
     id: identifierSchema,

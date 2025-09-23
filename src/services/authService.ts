@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs'
-import { AuthenticationException } from './../exceptions/auth/AuthenticationException'
-import { RegisterException } from './../exceptions/auth/RegisterException'
-import { AppPrismaClient } from './../plugins/prismaPlugin'
-import { LoginRequest, RegisterRequest } from './../schemas/authSchema'
+import { AuthenticationException } from './../exceptions/auth/AuthenticationException.js'
+import { RegisterException } from './../exceptions/auth/RegisterException.js'
+import { AppPrismaClient } from './../plugins/prismaPlugin.js'
+import { LoginRequest, RegisterRequest } from './../schemas/authSchema.js'
 
 export async function loginUser(
     prisma: AppPrismaClient,

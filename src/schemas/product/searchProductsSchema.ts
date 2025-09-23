@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { paginationRequestSchema } from './../../schemas/common/paginationSchema'
+import { paginationRequestSchema } from './../../schemas/common/paginationSchema.js'
 
 const searchProductsSchema = paginationRequestSchema
     .extend({

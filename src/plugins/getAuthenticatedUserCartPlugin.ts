@@ -1,7 +1,7 @@
 import { FastifyRequest } from 'fastify'
 import fp from 'fastify-plugin'
-import { CartResponse } from './../schemas/cart/cartResponseSchema'
-import { getCartForUser } from './../services/cart/getUserCartService'
+import { CartResponse } from './../schemas/cart/cartResponseSchema.js'
+import { getCartForUser } from './../services/cart/getUserCartService.js'
 
 declare module 'fastify' {
     interface FastifyRequest {

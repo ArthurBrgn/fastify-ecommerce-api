@@ -1,16 +1,16 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { AddCouponToCartRequest } from './../schemas/cart/addCouponToCartSchema'
-import { AddProductToCartRequest } from './../schemas/cart/addProductToCartSchema'
-import { CartItemParamsSchema } from './../schemas/cart/cartItemParamsSchema'
-import addCouponToCart from './../services/cart/addCouponToCartService'
-import { addProductToCart } from './../services/cart/addProductToCartService'
-import { deleteCartItem } from './../services/cart/deleteCartItemService'
-import { deleteCart } from './../services/cart/deleteCartService'
-import { deleteCouponFromCart } from './../services/cart/deleteCouponFromCartService'
+import { AddCouponToCartRequest } from './../schemas/cart/addCouponToCartSchema.js'
+import { AddProductToCartRequest } from './../schemas/cart/addProductToCartSchema.js'
+import { CartItemParamsSchema } from './../schemas/cart/cartItemParamsSchema.js'
+import addCouponToCart from './../services/cart/addCouponToCartService.js'
+import { addProductToCart } from './../services/cart/addProductToCartService.js'
+import { deleteCartItem } from './../services/cart/deleteCartItemService.js'
+import { deleteCart } from './../services/cart/deleteCartService.js'
+import { deleteCouponFromCart } from './../services/cart/deleteCouponFromCartService.js'
 import {
     decrementCartItemQuantity,
     incrementCartItemQuantity
-} from './../services/cart/updateCartItemQuantityService'
+} from './../services/cart/updateCartItemQuantityService.js'
 
 export async function addProductToCartHandler(
     request: FastifyRequest<{ Body: AddProductToCartRequest }>,

@@ -3,13 +3,13 @@ import {
     createOrderHandler,
     getOrdersHistoryHandler,
     viewOrderHandler
-} from './../controllers/orderController'
-import { PaginationRequest, paginationRequestSchema } from './../schemas/common/paginationSchema'
+} from './../controllers/orderController.js'
+import { PaginationRequest, paginationRequestSchema } from './../schemas/common/paginationSchema.js'
 import {
     orderResponseSchema,
     ViewOrderRequest,
     viewOrderSchema
-} from './../schemas/order/orderSchema'
+} from './../schemas/order/orderSchema.js'
 
 export default async function orderRoutes(server: FastifyInstance) {
     server.get<{ Querystring: PaginationRequest }>(
