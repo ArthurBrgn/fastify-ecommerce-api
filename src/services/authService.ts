@@ -1,8 +1,8 @@
-import { AuthenticationException } from '@/exceptions/auth/AuthenticationException'
-import { RegisterException } from '@/exceptions/auth/RegisterException'
-import { AppPrismaClient } from '@/plugins/prismaPlugin'
-import { LoginRequest, RegisterRequest } from '@/schemas/authSchema'
 import bcrypt from 'bcryptjs'
+import { AuthenticationException } from './../exceptions/auth/AuthenticationException'
+import { RegisterException } from './../exceptions/auth/RegisterException'
+import { AppPrismaClient } from './../plugins/prismaPlugin'
+import { LoginRequest, RegisterRequest } from './../schemas/authSchema'
 
 export async function loginUser(
     prisma: AppPrismaClient,

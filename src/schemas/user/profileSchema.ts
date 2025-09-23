@@ -1,5 +1,5 @@
-import { saveUserSchema, userAddressSchema, userSchema } from '@/schemas/common/userSchema'
 import z from 'zod'
+import { saveUserSchema, userAddressSchema, userSchema } from './../../schemas/common/userSchema'
 
 const userProfileResponseSchema = userSchema
 

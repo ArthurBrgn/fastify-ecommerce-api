@@ -15,9 +15,6 @@
         "outDir": "build",
         "rootDir": "src",
         "baseUrl": ".",
-        "paths": {
-            "@/*": ["src/*"]
-        },
         "resolveJsonModule": true,
         "types": ["node"],
         "useUnknownInCatchVariables": false

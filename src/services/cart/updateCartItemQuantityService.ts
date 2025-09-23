@@ -1,6 +1,6 @@
-import { ProductOutOfStockException } from '@/exceptions/cart/ProductOutOfStockException'
-import { RecordNotFoundException } from '@/exceptions/RecordNotFoundException'
-import { AppPrismaClient } from '@/plugins/prismaPlugin'
+import { ProductOutOfStockException } from './../../exceptions/cart/ProductOutOfStockException'
+import { RecordNotFoundException } from './../../exceptions/RecordNotFoundException'
+import { AppPrismaClient } from './../../plugins/prismaPlugin'
 
 export async function incrementCartItemQuantity(
     prisma: AppPrismaClient,

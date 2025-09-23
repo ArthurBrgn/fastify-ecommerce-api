@@ -1,6 +1,6 @@
-import authRoutes from '@/routes/authRoutes'
-import productRoutes from '@/routes/productRoutes'
 import { FastifyInstance } from 'fastify'
+import authRoutes from './../routes/authRoutes'
+import productRoutes from './../routes/productRoutes'
 import cartRoutes from './cartRoutes'
 import orderRoutes from './orderRoutes'
 import userRoutes from './userRoutes'

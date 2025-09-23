@@ -1,6 +1,6 @@
-import type { LoginRequest, RegisterRequest } from '@/schemas/authSchema'
-import { loginUser, registerUser } from '@/services/authService'
 import { FastifyReply, FastifyRequest } from 'fastify'
+import type { LoginRequest, RegisterRequest } from './../schemas/authSchema'
+import { loginUser, registerUser } from './../services/authService'
 
 export async function loginHandler(
     request: FastifyRequest<{ Body: LoginRequest }>,

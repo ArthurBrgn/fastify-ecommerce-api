@@ -1,5 +1,5 @@
-import { productWithCategorySchema } from '@/schemas/common/productSchema'
 import { z } from 'zod'
+import { productWithCategorySchema } from './../../schemas/common/productSchema'
 
 const popularProductsResponseSchema = z.array(productWithCategorySchema)
 

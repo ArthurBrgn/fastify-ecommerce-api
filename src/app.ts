@@ -1,11 +1,11 @@
-import errorHandlerPlugin from '@/plugins/errorHandlerPlugin'
-import jwtPlugin from '@/plugins/jwtPlugin'
-import prismaPlugin from '@/plugins/prismaPlugin'
-import swaggerPlugin from '@/plugins/swaggerPlugin'
-import routes from '@/routes'
 import Fastify from 'fastify'
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod'
+import errorHandlerPlugin from './plugins/errorHandlerPlugin'
 import getAuthenticatedUserCartPlugin from './plugins/getAuthenticatedUserCartPlugin'
+import jwtPlugin from './plugins/jwtPlugin'
+import prismaPlugin from './plugins/prismaPlugin'
+import swaggerPlugin from './plugins/swaggerPlugin'
+import routes from './routes/index'
 
 export async function buildApp() {
     const server = Fastify({

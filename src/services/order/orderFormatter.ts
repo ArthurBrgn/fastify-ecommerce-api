@@ -1,6 +1,6 @@
-import { OrderResponse } from '@/schemas/order/orderSchema'
-import roundPrice from '@/utils/roundPrice'
 import { DiscountType } from '@prisma/client'
+import { OrderResponse } from './../../schemas/order/orderSchema'
+import roundPrice from './../../utils/roundPrice'
 
 export type OrderWithItemsLite = {
     id: number

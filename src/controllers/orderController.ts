@@ -1,8 +1,8 @@
-import { PaginationRequest } from '@/schemas/common/paginationSchema'
-import { ViewOrderRequest } from '@/schemas/order/orderSchema'
-import createOrder from '@/services/order/createOrderService'
-import { getOrderDetails, getOrdersHistory } from '@/services/order/orderService'
 import { FastifyReply, FastifyRequest } from 'fastify'
+import { PaginationRequest } from './../schemas/common/paginationSchema'
+import { ViewOrderRequest } from './../schemas/order/orderSchema'
+import createOrder from './../services/order/createOrderService'
+import { getOrderDetails, getOrdersHistory } from './../services/order/orderService'
 
 export async function getOrdersHistoryHandler(
     request: FastifyRequest<{ Querystring: PaginationRequest }>,

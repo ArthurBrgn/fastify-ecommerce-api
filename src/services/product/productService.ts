@@ -1,5 +1,5 @@
-import { RecordNotFoundException } from '@/exceptions/RecordNotFoundException'
-import { AppPrismaClient } from '@/plugins/prismaPlugin'
+import { RecordNotFoundException } from './../../exceptions/RecordNotFoundException'
+import { AppPrismaClient } from './../../plugins/prismaPlugin'
 
 export async function getPopularProducts(prisma: AppPrismaClient, userId: number) {
     const popularProducts = await prisma.orderItem.groupBy({

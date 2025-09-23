@@ -1,3 +1,5 @@
+import { cartResponseSchema } from './../schemas/cart/cartResponseSchema'
+import { FastifyInstance } from 'fastify'
 import {
     addCouponToCartHandler,
     addProductToCartHandler,
@@ -6,15 +8,16 @@ import {
     deleteCartItemHandler,
     deleteCouponFromCartHandler,
     incrementCartItemQuantityHandler
-} from '@/controllers/cartController'
-import { AddCouponToCartRequest, addCouponToCartSchema } from '@/schemas/cart/addCouponToCartSchema'
+} from './../controllers/cartController'
+import {
+    AddCouponToCartRequest,
+    addCouponToCartSchema
+} from './../schemas/cart/addCouponToCartSchema'
 import {
     AddProductToCartRequest,
     addProductToCartSchema
-} from '@/schemas/cart/addProductToCartSchema'
-import { CartItemParamsSchema, cartItemsParamsSchema } from '@/schemas/cart/cartItemParamsSchema'
-import { cartResponseSchema } from '@/schemas/cart/cartResponseSchema'
-import { FastifyInstance } from 'fastify'
+} from './../schemas/cart/addProductToCartSchema'
+import { CartItemParamsSchema, cartItemsParamsSchema } from './../schemas/cart/cartItemParamsSchema'
 
 export default function cartRoutes(server: FastifyInstance) {
     server.post<{ Body: AddProductToCartRequest }>(
