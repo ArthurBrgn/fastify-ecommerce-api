@@ -12,7 +12,7 @@
         "noUnusedParameters": true,
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
-        "outDir": "build",
+        "outDir": "dist",
         "rootDir": "src",
         "baseUrl": ".",
         "resolveJsonModule": true,
@@ -20,5 +20,5 @@
         "useUnknownInCatchVariables": false
     },
     "include": ["src/**/*.ts"],
-    "exclude": ["node_modules", "build"]
+    "exclude": ["node_modules", "dist"]
 }
