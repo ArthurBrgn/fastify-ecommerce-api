@@ -1,6 +1,6 @@
 import { buildApp } from '@/app'
+import { Category, Product, User } from '@/generated/prisma/client'
 import { OrderResponse } from '@/schemas/order/orderSchema'
-import { Category, Product, User } from '@prisma/client'
 import { hash } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import supertest from 'supertest'

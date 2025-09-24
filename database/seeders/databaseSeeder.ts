@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '../../src/generated/prisma/client'
 import couponSeeder from './couponSeeder'
 import productSeeder from './productSeeder'
 import userSeeder from './userSeeder'

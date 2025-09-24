@@ -1,6 +1,6 @@
-import { Prisma } from '@prisma/client'
 import { hash } from 'bcryptjs'
 import { RecordNotFoundException } from './../exceptions/RecordNotFoundException.js'
+import { Prisma } from './../generated/prisma/client.js'
 import { AppPrismaClient } from './../plugins/prismaPlugin.js'
 import { UserProfilePatchRequest } from './../schemas/user/profileSchema.js'
 

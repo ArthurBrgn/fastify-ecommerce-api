@@ -1,5 +1,5 @@
 import { buildApp } from '@/app'
-import { Coupon, Product } from '@prisma/client'
+import { Coupon, Product } from '@/generated/prisma/client'
 import { hash } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import supertest from 'supertest'

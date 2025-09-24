@@ -1,4 +1,4 @@
-import { DiscountType } from '@prisma/client'
+import { DiscountType } from './../generated/prisma/enums.js'
 
 export default function applyCoupon(
     total: number,

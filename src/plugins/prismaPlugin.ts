@@ -1,7 +1,7 @@
-import { PrismaClient } from '@prisma/client'
 import fp from 'fastify-plugin'
+import { PrismaClient } from './../generated/prisma/client.js'
 
-export type AppPrismaClient = PrismaClient<{ omit: { user: { password: true } } }>
+export type AppPrismaClient = PrismaClient<never, { user: { password: true } }>
 
 // Use TypeScript module augmentation to declare the type of server.prisma to be PrismaClient
 declare module 'fastify' {

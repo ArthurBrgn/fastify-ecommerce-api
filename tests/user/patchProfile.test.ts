@@ -1,6 +1,6 @@
 import { buildApp } from '@/app'
+import { User } from '@/generated/prisma/client'
 import { UserProfilePatchRequest } from '@/schemas/user/profileSchema'
-import { User } from '@prisma/client'
 import { compare, hash } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import supertest from 'supertest'

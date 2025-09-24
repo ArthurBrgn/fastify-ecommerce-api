@@ -1,4 +1,4 @@
-import { DiscountType } from '@prisma/client'
+import { DiscountType } from './../../generated/prisma/enums.js'
 import { OrderResponse } from './../../schemas/order/orderSchema.js'
 import roundPrice from './../../utils/roundPrice.js'
 

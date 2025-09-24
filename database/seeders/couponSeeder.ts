@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker'
-import type { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client/extension'
 
 export default async function couponSeeder(prisma: PrismaClient) {
     await prisma.coupon.create({

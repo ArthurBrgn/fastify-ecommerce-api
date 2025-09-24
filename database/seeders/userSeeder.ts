@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
-import type { PrismaClient } from '@prisma/client'
 import { hashSync } from 'bcryptjs'
+import { PrismaClient } from '../../src/generated/prisma/client'
 
 export default async function userSeeder(prisma: PrismaClient, count: number) {
     // Admin user
