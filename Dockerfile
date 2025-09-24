@@ -1,18 +1,20 @@
-FROM node:22-slim
-
-WORKDIR /app
+FROM node:22-alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+RUN corepack enable && apk add --no-cache openssl3
+COPY . /app
+WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
-COPY . .
-
-RUN pnpm db:generate
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpx prisma generate
 RUN pnpm run build
 
-EXPOSE 3000
-
-CMD ["node", "dist/main.js"]
+FROM base
+COPY --from=prod-deps /app/node_modules /app/node_modules
+COPY --from=build /app/dist /app/dist
+EXPOSE 8000
+CMD [ "pnpm", "start" ]
