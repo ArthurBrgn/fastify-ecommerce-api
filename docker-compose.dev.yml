@@ -1,0 +1,14 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - ./database:/app/database
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    command: ['pnpm', 'run', 'dev']
